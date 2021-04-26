@@ -83,7 +83,7 @@
                     <div class="flex-center">
                       <div class="circle1">
                         <div class="circle2">
-                          <v-img src="~@/assets/img/aeroplane.png"/>
+                          <v-img src="~@/assets/img/airplane.png"/>
                         </div>
                       </div>
                     </div>
