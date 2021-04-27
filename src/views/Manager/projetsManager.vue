@@ -88,7 +88,9 @@
                     color="basil"
                     flat
                   >
-                    <v-card-text>salmmam</v-card-text>
+                    <v-card-text>
+                      <taches/>
+                    </v-card-text>
                   </v-card>
                 </v-tab-item>
               </v-tabs-items>
@@ -117,6 +119,7 @@
       avancement: () => import('@/views/Manager/avancement'),  
       aboutProjet:() => import('@/views/Manager/aboutProjet'),
       listeEmp:() => import('@/views/Manager/listeEmploye'),
+      taches:() => import('@/views/Manager/Taches'),
     },
     data () {
       return {
