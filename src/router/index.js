@@ -21,7 +21,6 @@ import avancement from '@/views/Employe/form_avancement'
 import Manager from '@/views/Manager/manager'
 import messagesManager from '@/views/Manager/messagesManager'
 import projetsManager from '@/views/Manager/projetsManager'
-import suivieEmpl from '@/views/Manager/suivieEmpl'
 
 
 Vue.use(VueRouter)
@@ -113,11 +112,8 @@ const routes = [{
             path: 'messages',
             name: 'messagesManager',
             component: messagesManager
-        }, {
-            path: 'suivieEmpl',
-            name: 'suivieEmpl',
-            component: suivieEmpl
-        }, {
+        }, 
+         {
             path: 'projets',
             name: 'projets',
             component: projetsManager

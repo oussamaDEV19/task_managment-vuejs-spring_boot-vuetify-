@@ -54,7 +54,6 @@ export default {
       drawer: true,
       links: [
         {icon : 'mdi-view-dashboard', text : 'Projetes', route : '/manager/projets'},
-        {icon : 'mdi-calendar-check', text : 'taches', route : '/manager/suivieEmploye'},
         {icon : 'mdi-message-bulleted', text : 'Send Messages', route : '/manager/messages'},
       ],
       snackbar: false,

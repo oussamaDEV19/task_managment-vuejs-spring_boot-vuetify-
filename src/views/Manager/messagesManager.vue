@@ -14,19 +14,14 @@
       label="Title Message"
       required  
     ></v-text-field>
-
-
-    <v-text-field
-      v-model="msg"
-      :counter="30"
-      :rules="msgRules"
-      label="Message"
-      required
-    ></v-text-field>
-
-    
-
-
+   <br>
+    <v-textarea
+          v-model="msg"
+          solo
+          name="input-7-4"
+          label="message"
+          required
+        ></v-textarea>
     <v-btn
       :disabled="!valid"
       color="success"

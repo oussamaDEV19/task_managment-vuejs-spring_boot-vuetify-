@@ -37,25 +37,19 @@
                   required
                 ></v-text-field>
               </v-col>
-              <v-col
-                cols="4"
-              >
-                <v-text-field
-                  label="N sub tasks"
-                  hint="ex : 3,4 sub tasks"
-                ></v-text-field>
-              </v-col>
               
-              <v-col cols="4">
-                <v-text-field
-                  label="price"
-                  required
-                ></v-text-field>
+              <v-col cols="12">
+                  <v-textarea
+                    v-model="msg"
+                    solo
+                    name="input-7-4"
+                    label="message"
+                    required
+                  ></v-textarea>
+
               </v-col>
               <v-col
-                cols="4"
-                sm="6"
-                md="4"
+                cols="12"
               >
                 <v-menu
         v-model="menu2"
@@ -68,7 +62,7 @@
         <template v-slot:activator="{ on, attrs }">
           <v-text-field
             v-model="date"
-            label="Deadline"
+            label="date fin"
             prepend-icon="mdi-calendar"
             readonly
             v-bind="attrs"
