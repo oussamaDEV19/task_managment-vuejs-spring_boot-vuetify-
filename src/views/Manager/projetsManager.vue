@@ -53,6 +53,7 @@
                     flat
                   >
                     <v-card-text>
+                      <aboutProjet />
                     </v-card-text>
                   </v-card>
                 </v-tab-item>
@@ -75,7 +76,9 @@
                     color="basil"
                     flat
                   >
-                    <v-card-text>{{ text }}</v-card-text>
+                    <v-card-text>
+                      <listeEmp />
+                    </v-card-text>
                   </v-card>
                 </v-tab-item>
 
@@ -112,8 +115,8 @@
   export default {
     components: {
       avancement: () => import('@/views/Manager/avancement'),  
-      aboutProjet:() => import('@/views/Manager/aboutProjet'),  
-
+      aboutProjet:() => import('@/views/Manager/aboutProjet'),
+      listeEmp:() => import('@/views/Manager/listeEmploye'),
     },
     data () {
       return {
