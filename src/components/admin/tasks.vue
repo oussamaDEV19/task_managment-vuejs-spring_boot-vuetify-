@@ -1,6 +1,133 @@
 <template>
   <v-app>
     <SideBar/>
+
+
+
+<v-row justify="center" class="col-12" >
+    <v-dialog
+      v-model="dialog"
+      persistent
+      max-width="600px"
+    >
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          color="primary"
+          dark
+          v-bind="attrs"
+          v-on="on"
+          class="ma-4"
+        >
+          Create New Task
+        </v-btn>
+      </template>
+      <v-card>
+        <v-card-title>
+          <span class="headline">NEW TASK</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col
+                cols="12"
+
+              >
+                <v-text-field
+                  label="Task Name"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col
+                cols="4"
+              >
+                <v-text-field
+                  label="N sub tasks"
+                  hint="ex : 3,4 sub tasks"
+                ></v-text-field>
+              </v-col>
+              
+              <v-col cols="4">
+                <v-text-field
+                  label="price"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col
+                cols="4"
+                sm="6"
+                md="4"
+              >
+                <v-menu
+        v-model="menu2"
+        :close-on-content-click="false"
+        :nudge-right="40"
+        transition="scale-transition"
+        offset-y
+        min-width="auto"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            v-model="date"
+            label="Deadline"
+            prepend-icon="mdi-calendar"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-date-picker
+          v-model="date"
+          @input="menu2 = false"
+        ></v-date-picker>
+      </v-menu>
+              </v-col>
+              <v-col
+                cols="12"
+                sm="6"
+              >
+                <v-select
+                  :items="['samir', 'karim', 'said', 'khalid']"
+                  label="Managers"
+                  required
+                ></v-select>
+              </v-col>
+              <v-col
+                cols="12"
+                sm="6"
+              >
+                <v-autocomplete
+                  :items="['hazem', 'rayan', 'samira']"
+                  label="Employees"
+                  multiple
+                ></v-autocomplete>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="dialog = false"
+          >
+            Close
+          </v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="dialog = false"
+          >
+            Add
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-row>
+
+
+
+
   <v-data-table
     :headers="tasksHeaders"
     :items="desserts"
@@ -12,7 +139,7 @@
   >
     <template v-slot:top>
       <v-toolbar flat>
-        <v-toolbar-title>Expandable Table</v-toolbar-title>
+        <v-toolbar-title>Tasks Table</v-toolbar-title>  
         <v-spacer></v-spacer>
         <v-switch
           v-model="singleExpand"
@@ -21,6 +148,7 @@
         ></v-switch>
       </v-toolbar>
     </template>
+    
     <template v-slot:expanded-item="{ headers, item }">
         
       <td :colspan="headers.length">
@@ -108,6 +236,9 @@
       </v-chip>
     </template>
   </v-data-table>
+
+
+  
   </v-app>
 </template>
 
@@ -118,6 +249,11 @@
     },
     data () {
       return {
+        date: new Date().toISOString().substr(0, 10),
+      menu: false,
+      modal: false,
+      menu2: false,
+        dialog: false,
         expanded: [],
         singleExpand: false,
         tasksHeaders: [
@@ -128,6 +264,7 @@
             value: 'name',
           },
           { text: 'Employees', value: 'Employees' },
+          { text: 'Managers', value: 'Managers' },
           { text: 'Deadline (Days)', value: 'Deadline' },
           { text: 'N sub tasks', value: 'n_sub_tasks' },
           { text: 'Price', value: 'Price' },
@@ -139,6 +276,7 @@
           {
             name: 'Kotlin Application , QCM',
             Employees: "khalid moussaoui , nassim larouji",
+            Managers: "said chadi",
             Deadline: 20,
             n_sub_tasks: 3,
             Price: 4000,
@@ -148,6 +286,7 @@
           {
             name: 'JEE',
             Employees: "khalid moussaoui , nassim larouji",
+            Managers: "said chadi",
             Deadline: 20,
             n_sub_tasks: 3,
             Price: 4000,
@@ -157,6 +296,7 @@
           {
             name: 'Laravel , Angular Store',
             Employees: "khalid moussaoui , nassim larouji",
+            Managers: "said chadi",
             Deadline: 20,
             n_sub_tasks: 3,
             Price: 4000,
@@ -166,6 +306,7 @@
           {
             name: 'API - Fecebook',
             Employees: "khalid moussaoui , nassim larouji",
+            Managers: "said chadi",
             Deadline: 20,
             n_sub_tasks: 3,
             Price: 4000,
@@ -175,6 +316,7 @@
           {
             name: 'Ebay Tool Ranking',
             Employees: "khalid moussaoui , nassim larouji",
+            Managers: "said chadi",
             Deadline: 20,
             n_sub_tasks: 3,
             Price: 4000,
@@ -184,6 +326,7 @@
           {
             name: 'Amazon Resell Template',
             Employees: "khalid moussaoui , nassim larouji",
+            Managers: "said chadi",
             Deadline: 20,
             n_sub_tasks: 3,
             Price: 4000,
@@ -193,6 +336,7 @@
           {
             name: 'C# Program , statistics',
             Employees: "khalid moussaoui , nassim larouji",
+            Managers: "said chadi",
             Deadline: 20,
             n_sub_tasks: 3,
             Price: 4000,
