@@ -18,6 +18,11 @@ import projets from '@/views/Employe/projets'
 import messages from '@/views/Employe/messages'
 import taches from '@/views/Employe/taches'
 import avancement from '@/views/Employe/form_avancement'
+import Manager from '@/views/Manager/manager'
+import messagesManager from '@/views/Manager/messagesManager'
+import projetsManager from '@/views/Manager/projetsManager'
+import suivieEmpl from '@/views/Manager/suivieEmpl'
+
 
 Vue.use(VueRouter)
 
@@ -101,6 +106,24 @@ const routes = [{
         component: avancement,
         name: 'avancement'
     },
+    {
+        path: '/manager',
+        component: Manager,
+        children: [{
+            path: 'messages',
+            name: 'messagesManager',
+            component: messagesManager
+        }, {
+            path: 'suivieEmpl',
+            name: 'suivieEmpl',
+            component: suivieEmpl
+        }, {
+            path: 'projets',
+            name: 'projets',
+            component: projetsManager
+        }]
+    },
+    
     /*{
     path: '*',
     redirect: { name: 'signin' }
