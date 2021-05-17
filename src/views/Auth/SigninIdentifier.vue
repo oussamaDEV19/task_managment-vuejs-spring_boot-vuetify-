@@ -63,7 +63,7 @@ import { wip } from '@/helpers.js'
 export default {
   data: () => ({
     error: null,
-    disabled: false
+    disabled: false,
   }),
 
   computed: {

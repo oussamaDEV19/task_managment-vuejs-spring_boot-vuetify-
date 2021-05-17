@@ -22,7 +22,8 @@
 <script>
 export default {
   data: () => ({
-    transitionName: 'slide-left'
+    transitionName: 'slide-left',
+    
   }),
 
   watch: {

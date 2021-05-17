@@ -42,11 +42,35 @@
               <v-container>
                 <v-row>
                   <v-col
-                    cols="12"
+                    cols="6"
                   >
                     <v-text-field
-                      v-model="editedItem.name"
-                      label="Full name"
+                      v-model="editedItem.nom"
+                      label="Nom"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                    cols="6"
+                  >
+                    <v-text-field
+                      v-model="editedItem.prenom"
+                      label="Prenom"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                    cols="6"
+                  >
+                    <v-text-field
+                      v-model="editedItem.age"
+                      label="Age"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                    cols="6"
+                  >
+                    <v-text-field
+                      v-model="editedItem.telephone"
+                      label="Telephone"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -59,6 +83,7 @@
                   </v-col>
                   <v-col
                     cols="12"
+                    
                   >
                     <v-text-field
                       v-model="editedItem.password"
@@ -67,13 +92,11 @@
                   </v-col>
                   <v-col
                 cols="12"
-                sm="6"
               >
-                <v-select
-                  :items="['Employee', 'Manager']"
-                  label="User State"
-                  required
-                ></v-select>
+                <v-text-field
+                      v-model="editedItem.role"
+                      label="Role"
+                    ></v-text-field>
               </v-col>
                 </v-row>
               </v-container>
@@ -91,9 +114,19 @@
               <v-btn
                 color="blue darken-1"
                 text
+                v-if="showAdd"
                 @click="save"
               >
                 Save
+              </v-btn>
+
+              <v-btn
+                color="blue darken-1"
+                text
+                v-if="showUpdate"
+                @click="update"
+              >
+                Update
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -139,6 +172,8 @@
 </template>
 
 <script>
+import { db } from '../../store/db'
+
   export default {
     components: {
       SideBar: () => import('../Sidebar'),
@@ -147,39 +182,46 @@
       dialog: false,
       dialogDelete: false,
       headers: [
-        {
-          text: 'Full Name',
-          align: 'start',
-          sortable: false,
-          value: 'name',
-        },
+        {  text: 'Nom',value: 'nom'},
+        {text: 'Prenom',value: 'prenom'},
         { text: 'Email', value: 'email' },
-        { text: 'Password', value: 'password' },
-        { text: 'State', value: 'state' },
+        { text: 'Age', value: 'age' },
+        { text: 'Tele', value: 'telephone' },
+        { text: 'Role', value: 'role' },
         { text: 'Actions', value: 'actions', sortable: false },
       ],
       users: [],
       editedIndex: -1,
+      deleteUserId: -1,
+      showAdd: false,
+      showUpdate: false,
       editedItem: {
-        name: 'oussama el aaoumari',
-        email: 'ousssama@gmail.com',
-        password: 'a123456',
-        state: 'manager',
+        "age": "19",
+        "email": "mustapha1@gmail.com",
+        "nom": "hadou",
+        "prenom": "mustapha",
+        "role": "EMPLOYEE",
+        "telephone": "0689826351",
+        "password": "a123456"
       },
       defaultItem: {
-        name: 'oussama el aaoumari',
-        email: 'ousssama@gmail.com',
-        password: 'a123456',
-        state: 'manager',
+        "age": "19",
+        "email": "mustapha1@gmail.com",
+        "nom": "hadou",
+        "prenom": "mustapha",
+        "role": "EMPLOYEE",
+        "telephone": "0689826351",
+        "password": "a123456"
       },
     }),
 
     computed: {
       formTitle () {
+        this.showAdd = this.editedIndex === -1 ? true : false
+        this.showUpdate = this.editedIndex === -1 ? false : true
         return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-      },
+      }
     },
-
     watch: {
       dialog (val) {
         val || this.close()
@@ -190,98 +232,44 @@
     },
 
     created () {
-      this.initialize()
+      db.dispatch('RetrieveUsers')
+      setTimeout(() => {
+        this.initialize()
+      }, 1)
+      
     },
-
     methods: {
       initialize () {
-        this.users = [
-          {
-            name: 'oussama el aaoumari',
-            email: 'ousssama@gmail.com',
-            password: 'a123456',
-            state: 'manager',
-          },
-          {
-            name: 'oussama el aaoumari',
-        email: 'ousssama@gmail.com',
-        password: 'a123456',
-        state: 'employee',
-          },
-          {
-            name: 'oussama el aaoumari',
-        email: 'ousssama@gmail.com',
-        password: 'a123456',
-        state: 'manager',
-          },
-          {
-            name: 'oussama el aaoumari',
-        email: 'ousssama@gmail.com',
-        password: 'a123456',
-        state: 'manager',
-          },
-          {
-            name: 'oussama el aaoumari',
-        email: 'ousssama@gmail.com',
-        password: 'a123456',
-        state: 'manager',
-          },
-          {
-            name: 'oussama el aaoumari',
-        email: 'ousssama@gmail.com',
-        password: 'a123456',
-        state: 'employee',
-          },
-          {
-            name: 'oussama el aaoumari',
-        email: 'ousssama@gmail.com',
-        password: 'a123456',
-        state: 'manager',
-          },
-          {
-            name: 'oussama el aaoumari',
-        email: 'ousssama@gmail.com',
-        password: 'a123456',
-        state: 'manager',
-          },
-          {
-            name: 'oussama el aaoumari',
-        email: 'ousssama@gmail.com',
-        password: 'a123456',
-        state: 'manager',
-          },
-          {
-            name: 'oussama el aaoumari',
-        email: 'ousssama@gmail.com',
-        password: 'a123456',
-        state: 'manager',
-          },
-        ]
+        this.users = db.getters.AllUsers
       },
 
       editItem (item) {
         this.editedIndex = this.users.indexOf(item)
-        this.editedItem = Object.assign({}, item)
+        this.editedItem = item
         this.dialog = true
+        
       },
 
       deleteItem (item) {
+        this.deleteUserId = item.userId
         this.editedIndex = this.users.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialogDelete = true
+
       },
 
       deleteItemConfirm () {
         this.users.splice(this.editedIndex, 1)
         this.closeDelete()
+        db.dispatch('deleteUser', this.deleteUserId)
       },
-
       close () {
         this.dialog = false
         this.$nextTick(() => {
           this.editedItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
         })
+        
       },
 
       closeDelete () {
@@ -296,10 +284,29 @@
         if (this.editedIndex > -1) {
           Object.assign(this.users[this.editedIndex], this.editedItem)
         } else {
+
           this.users.push(this.editedItem)
+          db.dispatch('addUser', {
+            age: this.editedItem.age,
+            email: this.editedItem.email,
+            nom: this.editedItem.nom,
+            prenom: this.editedItem.prenom,
+            role: this.editedItem.role,
+            telephone: this.editedItem.telephone,
+            password: this.editedItem.password
+          })
+            .then(response => {
+             
+          })  
+          
         }
         this.close()
       },
+      update (){
+        Object.assign(this.users[this.editedIndex], this.editedItem)
+        db.dispatch('updateUser', this.editedItem)
+        this.close()
+      }
     },
   }
 </script>

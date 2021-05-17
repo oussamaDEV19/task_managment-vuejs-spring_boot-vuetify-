@@ -4,5 +4,8 @@ module.exports = {
   'transpileDependencies': [
     'vuetify'
   ],
-  lintOnSave: false
+  lintOnSave: false,  
+  devServer: {
+    proxy: 'https://localhost:8081'
+} 
 }

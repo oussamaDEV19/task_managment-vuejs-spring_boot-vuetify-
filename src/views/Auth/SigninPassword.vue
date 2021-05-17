@@ -15,7 +15,7 @@
             mdi-account-circle
           </v-icon>
         </v-avatar>
-        email@example.com
+          {{ $store.state.identifier }}
         <v-avatar right>
           <v-icon color="secondary">
             mdi-chevron-down
@@ -28,7 +28,7 @@
           class="mb-10"
           :append-icon="show ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
           :label="$vuetify.lang.t('$vuetify.auth.sign-in-password.enter-password')"
-          name="password"
+          v-model="passwordd"
           :type="show ? 'input' : 'password'"
           hide-details="auto"
           outlined
@@ -51,9 +51,9 @@
           style="min-width: 88px;"
           color="primary"
           depressed
-          @click="$router.push({ name: 'password' })"
+          @click="login()"
         >
-          {{ $vuetify.lang.t('$vuetify.auth.sign-in-password.next') }}
+          Log In
         </v-btn>
       </div>
     </div>
@@ -62,10 +62,12 @@
 
 <script>
 import { wip } from '@/helpers.js'
+import { db } from '../../store/db'
 
 export default {
   data: () => ({
-    show: false
+    show: false,
+    passwordd  : '',
   }),
 
   computed: {
@@ -80,7 +82,18 @@ export default {
   },
 
   methods: {
-    wip
+    wip,
+    login(){
+      //console.log("email : " + this.$store.state.identifier  + " , password : " + this.passwordd)
+      
+      db.dispatch('retrieveToken', {
+        email: this.$store.state.identifier,
+        password: this.passwordd,
+      })
+        .then(response => {
+          this.$router.push({ name: 'dashboard' })
+        })
+    }
   }
 }
 </script>

@@ -38,6 +38,7 @@
                     outlined
                     :error-messages="error"
                     dense
+                    v-model="nom"
                   />
                 </v-col>
                 <v-col
@@ -54,6 +55,7 @@
                     outlined
                     :error-messages="error"
                     dense
+                    v-model="prenom"
                   />
                 </v-col>
               </v-row>
@@ -69,6 +71,7 @@
                 outlined
                 :error-messages="error"
                 dense
+                v-model="email"
               />
               <v-row>
                 <v-col
@@ -85,6 +88,7 @@
                     outlined
                     :error-messages="error"
                     dense
+                    v-model="pass1"
                   />
                 </v-col>
                 <v-col
@@ -101,6 +105,7 @@
                     outlined
                     :error-messages="error"
                     dense
+                    v-model="pass2"
                   />
                 </v-col>
               </v-row>
@@ -125,9 +130,9 @@
                 style="min-width: 88px;"
                 color="primary"
                 depressed
-                @click="wip"
+                @click="signup"
               >
-                {{ $vuetify.lang.t('$vuetify.auth.sign-up.next') }}
+                SignUp
               </v-btn>
             </div>
             <!-- <transition :name="transitionName">
@@ -151,16 +156,35 @@
 </template>
 
 <script>
-import { wip } from '@/helpers.js'
+import { db } from '../../store/db'
 
 export default {
   data: () => ({
     transitionName: '',
-    error: ''
+    error: '',
+    nom: '',
+    prenom: '',
+    email: '',
+    pass1: '',
+    pass2: '',
   }),
 
   methods: {
-    wip
+    signup() {
+      if(this.pass1 == this.pass2)
+      {
+        db.dispatch('addAdmin', {
+            email: this.email,
+            nom: this.nom,
+            prenom: this.prenom,
+            role: "ADMIN",
+            password: this.pass1
+          })
+            .then(response => {
+             this.$router.push({ name: 'signin' })
+          })  
+      }
+    }
   }
 }
 </script>

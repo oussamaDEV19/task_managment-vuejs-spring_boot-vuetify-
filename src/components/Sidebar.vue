@@ -61,12 +61,12 @@
 </template>
 
 <script>
-
+import { db } from '../store/db'
 
 export default {
   data() {
     return {
-      drawer: true,
+      drawer: false,
       links: [
         {icon : 'mdi-view-dashboard', text : 'Dashboard', route : '/dashboard'},
         {icon : 'mdi-account-details', text : 'My Employees', route : '/employees'},
@@ -83,7 +83,10 @@ export default {
   },
   methods: {
     logout() {
-
+      db.dispatch('destroyToken')
+      .then(response => {
+        this.$router.push({ name: 'HomePage' })
+      })
     }
   },
 };
