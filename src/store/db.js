@@ -191,6 +191,29 @@ export const db = new Vuex.Store( {
           console.log(error)
         })
     },
+    addProjet(context, credentials) {
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token')
+
+      return new Promise((resolve, reject) => {
+        axios.post('http://localhost:8081/projets/' + credentials.ManagerId, {
+                titre: credentials.titre,
+                status: "Created",
+                description: credentials.description,
+                date_debut: credentials.date_debut,
+                date_fin: credentials.date_fin,
+        },
+        { useCredentails: true },
+       // {headers:{Authorization: "Bearer" + localStorage.getItem('access_token') }}
+        )
+          .then(response => {
+            resolve(response)
+          })
+          .catch(error => {
+            console.log(error)
+            reject(error)
+          })
+        })
+    },
   },
   
 }
