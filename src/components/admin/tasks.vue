@@ -18,12 +18,12 @@
           v-on="on"
           class="ma-4"
         >
-          Create New Task
+          Create New Projet
         </v-btn>
       </template>
       <v-card>
         <v-card-title>
-          <span class="headline">NEW TASK</span>
+          <span class="headline">NEW PROJET</span>
         </v-card-title>
         <v-card-text>
           <v-container>
@@ -33,17 +33,18 @@
 
               >
                 <v-text-field
-                  label="Task Name"
+                v-model="titre"
+                  label="Titre Projet"
                   required
                 ></v-text-field>
               </v-col>
               
               <v-col cols="12">
                   <v-textarea
-                    v-model="msg"
+                    v-model="description"
                     solo
                     name="input-7-4"
-                    label="message"
+                    label="desciption"
                     required
                   ></v-textarea>
                   <v-file-input
@@ -83,24 +84,21 @@
               </v-col>
               <v-col
                 cols="12"
-                sm="6"
+                sm="12"
               >
                 <v-select
-                  :items="['samir', 'karim', 'said', 'khalid']"
+                  :items="users"
+                  item-value="dddd"
+                  v-model="manager"
                   label="Managers"
                   required
-                ></v-select>
+                  @change="GetIdSelected(manager)"
+                >
+                
+                
+                </v-select>
               </v-col>
-              <v-col
-                cols="12"
-                sm="6"
-              >
-                <v-autocomplete
-                  :items="['hazem', 'rayan', 'samira']"
-                  label="Employees"
-                  multiple
-                ></v-autocomplete>
-              </v-col>
+              
             </v-row>
           </v-container>
         </v-card-text>
@@ -116,7 +114,7 @@
           <v-btn
             color="blue darken-1"
             text
-            @click="dialog = false"
+            @click="AddProjet"
           >
             Add
           </v-btn>
@@ -243,6 +241,8 @@
 </template>
 
 <script>
+import { db } from '../../store/db'
+
   export default {
     components: {
       SideBar: () => import('../Sidebar'),
@@ -250,6 +250,12 @@
     data () {
       return {
         date: new Date().toISOString().substr(0, 10),
+        users: [],
+        usersId: [],
+        description: "",
+        titre: "",
+        manager: "",
+        managerId: "",
       menu: false,
       modal: false,
       menu2: false,
@@ -354,6 +360,59 @@
                 else if (state == "Finished") return 'green'
                 else if (state == "Cancelled") return 'red'
             },
+            AddProjet () {
+              this.dialog = false
+              console.log(this.titre)
+              console.log(this.description)
+              console.log(this.date)
+              const current = new Date();
+              var mm = ""
+              if(current.getMonth() <10){
+                mm = "0" + current.getMonth();
+              }
+              const date = `${current.getFullYear()}-${mm}-${current.getDate()}`;
+              console.log(date)
+              console.log(this.managerId)
+
+              db.dispatch('addProjet', {
+                titre: this.titre,
+                status: "created",
+                description: this.description,
+                date_debut: date,
+                date_fin: this.date,
+                ManagerId : this.managerId,
+              })
+                .then(response => {
+                
+              })
+
+            },
+            GetIdSelected(userId){
+              var i
+              for(i = 0 ; i < db.getters.AllUsers.length ; i++){
+                var tt = db.getters.AllUsers[i].nom + " " + db.getters.AllUsers[i].prenom
+                if(tt == this.manager){
+                  this.managerId = db.getters.AllUsers[i].userId 
+                }
+                this.users.push(db.getters.AllUsers[i].nom + " " + db.getters.AllUsers[i].prenom)
+              }
+              console.log(this.managerId)
+            },
         },
+        created () {
+          db.dispatch('RetrieveUsers')
+          setTimeout(() => {
+            var i
+            //console.log(db.getters.AllUsers.length)
+            for(i = 0 ; i < db.getters.AllUsers.length ; i++){
+              this.users.push(db.getters.AllUsers[i].nom + " " + db.getters.AllUsers[i].prenom)
+
+            }
+        //this.users = db.getters.AllUsers[0].nom
+      }, 5)
+      
+            
+        },
+        
   }
 </script>
