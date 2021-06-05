@@ -1,12 +1,11 @@
-
 <template>
   <v-app>
   <v-data-table
     :headers="tasksHeaders"
-    :items="desserts"
+    :items="infosProjet"
     :single-expand="singleExpand"
     :expanded.sync="expanded"
-    item-key="projet"
+    item-key="titre"
     show-expand
     class="elevation-1 ma-5"
   >
@@ -29,8 +28,7 @@
                 <h1 class="font-weight-bold display-3 basil--text">
                   Projets
                 </h1>
-              </v-card-title>
-          
+              </v-card-title>     
               <v-tabs
                 v-model="tab"
                 background-color="transparent"
@@ -53,7 +51,7 @@
                     flat
                   >
                     <v-card-text>
-                      <aboutProjet />
+                      <aboutProjet :projet="item" />
                     </v-card-text>
                   </v-card>
                 </v-tab-item>
@@ -65,7 +63,16 @@
                     flat
                   >
                     <v-card-text>
-                        <avancement/>
+                        <avancement :avancemenetProjet="item.avancementsProjet" :idProjet="item.prjet_id"/>
+                    </v-card-text>
+                  </v-card>
+                </v-tab-item>
+                <v-tab-item>
+                  <v-card
+                    color="basil"
+                    flat>
+                    <v-card-text>
+                      <listeEmp :listesEmploye="item.taches"/>
                     </v-card-text>
                   </v-card>
                 </v-tab-item>
@@ -77,27 +84,13 @@
                     flat
                   >
                     <v-card-text>
-                      <listeEmp />
-                    </v-card-text>
-                  </v-card>
-                </v-tab-item>
-
-                <v-tab-item
-                >
-                  <v-card
-                    color="basil"
-                    flat
-                  >
-                    <v-card-text>
-                      <taches/>
+                      <taches :listesTaches="item.taches" :idProjet="item.prjet_id"/>
                     </v-card-text>
                   </v-card>
                 </v-tab-item>
               </v-tabs-items>
             </v-card>
-          </template>
-           
-            
+          </template>     
       </td>
     </template>
     <template v-slot:item.state="{ item }">
@@ -105,7 +98,7 @@
         :color="getColor(item.state)"
         dark
       >
-        {{ item.state }}
+        {{ item.titre }}
       </v-chip>  
     </template>
   </v-data-table>
@@ -114,6 +107,8 @@
 
 
 <script>
+import axios from 'axios'
+import { projet } from '../../store/projet'
   export default {
     components: {
       avancement: () => import('@/views/Manager/avancement'),  
@@ -124,63 +119,24 @@
     data () {
       return {
         tab: null,
-          items: [
+        ListeProjet:null,
+        items: [
             'About Projet', 'Avancement Projet', 'Employe', 'Taches',
-          ],
-          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+        ],
         expanded: [],
+        infosProjet:[],
         singleExpand: false,
-        tasksHeaders: [
-          
+        tasksHeaders: [  
           {
             text: 'Projet',
             align: 'start',
-            sortable: false,
-            value: 'projet',
+            value: 'titre',
           },
-          { text: 'Date Debut', value: 'Date_Debut' },
-          { text: 'Date Fin ', value: 'Date_Fin' },
-          { text: 'progression (%)', value: 'progression' },
-          { text: 'Task State', value: 'state' },
+          { text: 'Date Debut', value: 'date_debut' },
+          { text: 'Date Fin ', value: 'date_fin' },
+          { text: 'progression (%)', value: 'status' },
+          { text: 'Task State', value: 'status' },
           { text: '', value: 'data-table-expand' },
-        ],
-        desserts: [
-          {
-            projet: 'Kotlin Applicationdf , QCM',
-            Date_Debut: 20,
-            Date_Fin: 20,
-            progression: '40%',
-            state: "Finished"
-          },
-          {
-            projet: 'Kotlin Applicationbv , QCM',
-            Date_Debut: 20,
-            Date_Fin: 20,
-            progression: '40%',
-            state: "Finished"
-          },
-          {
-            projet: 'Kotlin Applicationbb , QCM',
-            Date_Debut: 20,
-            Date_Fin: 20,
-            progression: '40%',
-            state: "Finished"
-          },
-          {
-            projet: 'Kotlin Application , QCM1',
-            Date_Debut: 20,
-            Date_Fin: 20,
-            progression: '40%',
-            state: "Finished"
-          },
-          {
-            projet: 'Kotlin Application , QCM',
-            Date_Debut: 20,
-            Date_Fin: 20,
-            progression: '40%',
-            state: "Finished"
-          },
-          
         ],
       }
     },
@@ -190,8 +146,13 @@
                 else if (state == "Under Processing") return 'orange'
                 else if (state == "Finished") return 'green'
                 else if (state == "Cancelled") return 'red'
-            },
-        },
+            }
+    },
+      mounted(){
+      axios
+      .get('http://localhost:8081/projets/getProjetByManager',{headers:{'Authorization':`Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYW5hbGxsQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJNQU5BR0VSIn1dLCJleHAiOjE2MjI4OTI3ODd9.afwEcu7TFekQGFtN4VCKGzLDZQNlGac2zZozSnjqHE1TXtpSBj5AieJZB0DPwRfRIFY6ta1657hM33egvHgxIA `}})
+      .then(response => (this.infosProjet= response.data));     
+      }
   }
 </script>
 
@@ -208,4 +169,4 @@
     .margin{
         margin: 30px;
     }
-    </style>
+</style>

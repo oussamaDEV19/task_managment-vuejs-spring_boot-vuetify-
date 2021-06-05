@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+<v-app>
 <v-row justify="center" class="col-12" >
     <v-dialog
       v-model="dialog"
@@ -24,33 +24,29 @@
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col
-                cols="12"
-
-              >
+              <v-col cols="12">
                 <v-text-field
+                 v-model="titre"
                   label="Tache Name"
                   required
                 ></v-text-field>
               </v-col>
                <v-col
-                cols="12"
-
-              >
-                <v-textarea
+                cols="12">
+         <v-textarea
           solo
           name="input-7-4"
+          v-model="description"
           label="Solo textarea"
-        ></v-textarea>
-              </v-col>
-              
-              
-              <v-col
-                cols="4"
-                sm="6"
-                md="4"
-              >
-                <v-menu
+        >
+        </v-textarea>
+        </v-col>
+        <v-col
+          cols="4"
+          sm="6"
+          md="4"
+        >
+        <v-menu
         v-model="menu2"
         :close-on-content-click="false"
         :nudge-right="40"
@@ -60,7 +56,7 @@
       >
         <template v-slot:activator="{ on, attrs }">
           <v-text-field
-            v-model="date"
+            v-model="date_fin"
             label="Deadline"
             prepend-icon="mdi-calendar"
             readonly
@@ -69,7 +65,7 @@
           ></v-text-field>
         </template>
         <v-date-picker
-          v-model="date"
+          v-model="date_fin"
           @input="menu2 = false"
         ></v-date-picker>
       </v-menu>
@@ -81,9 +77,12 @@
                 sm="6"
               >
                 <v-select
-                  :items="['samir']"
+                  :items="employeDisponible"
+                  item-text="nom"
+                  item-value="userId"
                   label="Employe"
                   required
+                  v-model="idemploye"
                 ></v-select>
               </v-col>
              
@@ -102,7 +101,7 @@
           <v-btn
             color="blue darken-1"
             text
-            @click="dialog = false"
+            @click="CreerTache()"
           >
             Add
           </v-btn>
@@ -111,15 +110,12 @@
     </v-dialog>
   </v-row>
 
-
-
-
   <v-data-table
     :headers="tasksHeaders"
-    :items="desserts"
+    :items="listesTaches"
     :single-expand="singleExpand"
     :expanded.sync="expanded"
-    item-key="name"
+    item-key="employee.nom"
     show-expand
     class="elevation-1 ma-5"
   >
@@ -135,82 +131,30 @@
       </v-toolbar>
     </template>
     
-    <template v-slot:expanded-item="{ headers, item }">
-        
+    <template v-slot:expanded-item="{headers,item}">    
       <td :colspan="headers.length">
             <v-timeline
             align-top
             dense
-            class="ma-5"
-        >
+            class="ma-5">
             <v-timeline-item
             color="green"
             small
+            v-for="ite in item.avancementTache"
             >
             <v-row class="pt-1">
                 <v-col cols="1">
-                <strong>21-04-2021</strong>
+                <strong>{{ite.score}}</strong>
                 </v-col>
                 <v-col >
-                <strong>Mobile App task</strong>
+                <strong>{{ite.date_ajout}}</strong>
                 <div class="caption">
-                    with kotlin
+                  {{ite.titre}}
                 </div>
                 </v-col>
             </v-row>
             </v-timeline-item>
-
-            <v-timeline-item
-            color="teal lighten-3"
-            small
-            >
-            <v-row class="pt-1">
-                <v-col cols="1">
-                <strong>22-04-2021</strong>
-                </v-col>
-                <v-col >
-                <strong>start conception part</strong>
-                <div class="caption">
-                    using adobe xd,ulistrator
-                </div>
-                </v-col>
-            </v-row>
-            </v-timeline-item>
-
-            <v-timeline-item
-            color="teal lighten-3"
-            small
-            >
-            <v-row class="pt-1">
-                <v-col cols="1">
-                <strong>24-04-2021</strong>
-                </v-col>
-                <v-col >
-                <strong>start development part</strong>
-                <div class="caption">
-                    Using kotlin, android studio, sqlite
-                </div>
-                </v-col>
-            </v-row>
-            </v-timeline-item>
-
-            <v-timeline-item
-            color="red"
-            small
-            >
-            <v-row class="pt-1">
-                <v-col cols="1">
-                <strong>29-04-2021</strong>
-                </v-col>
-                <v-col >
-                <strong>Finish the application</strong>
-                <div class="caption">
-                    deploy and hosting
-                </div>
-                </v-col>
-            </v-row>
-            </v-timeline-item>
-        </v-timeline>
+            </v-timeline>
       </td>
     </template>
     <template v-slot:item.state="{ item }">
@@ -229,12 +173,15 @@
 </template>
 
 <script>
+  import axios from 'axios'
+  import { projet } from '../../store/projet'
   export default {
+    props:['listesTaches','idProjet'],
     components: {
     },
     data () {
       return {
-        date: new Date().toISOString().substr(0, 10),
+      date: new Date().toISOString().substr(0, 10),
       menu: false,
       modal: false,
       menu2: false,
@@ -243,37 +190,23 @@
         singleExpand: false,
         tasksHeaders: [
           {
-            text: 'Tache Name',
+            text: 'Task',
             align: 'start',
             sortable: false,
-            value: 'name',
+            value: 'description',
           },
-          { text: 'Employees', value: 'Employees' },
-          { text: 'date debut', value: 'date_debut' },
-          { text: 'date fin', value: 'date_fin' },
-          { text: 'progression (%)', value: 'progression' },
-          { text: 'Task State', value: 'state' },
+          { text: 'Employé', value: 'employee.nom' },
+          { text: 'Date Debut', value: 'date_debut' },
+          { text: 'Date Fin', value: 'date_fin' },
+          { text: 'Progression (%)', value: 'status' },
+          { text: 'Task State', value: 'status' },
           { text: '', value: 'data-table-expand' },
         ],
-        desserts: [
-          {
-            name: 'C# Program ',
-            Employees: "khalid moussaoui ",
-            date_debut: 20,
-            date_fin: 20,
-            progression: '40%',
-            state: "Created"
-          },
-          {
-            name: 'statistics',
-            Employees: "khalid moussaoui ",
-            date_debut: 20,
-            date_debut: 20,
-            progression: '40%',
-            state: "Created"
-          },
-          
-        ],
+          titre:'',
+          description:'',
+          date_fin:new Date().toISOString().substr(0, 10),
+          idemploye:'',
+          employeDisponible:[]
       }
     },
     methods: {
@@ -283,6 +216,41 @@
                 else if (state == "Finished") return 'green'
                 else if (state == "Cancelled") return 'red'
             },
+            CreerTache(){
+              const current = new Date();
+              console.log(current);
+              var mm = "";
+              var dd="";
+              if(current.getMonth() <10){
+                mm = "0" + current.getMonth();
+              }
+              if(current.getDate() <10){
+                dd = "0" + current.getDate();
+              }
+                const dateD = `${current.getFullYear()}-${mm}-${dd}`;               
+
+                console.log(this.date_fin);
+
+                console.log(dateD);
+                projet.dispatch('creerTache',{
+                titre: this.titre,
+                description:this.description,
+                date_debut:dateD,
+                date_fin: this.date_fin,
+                idProjet: this.idProjet,
+                idEmploye:this.idemploye
+                })
+                this.dialog = false;
+            },
         },
+        mounted(){
+              axios.get('http://localhost:8081/users/getEmployeParTaches/'+this.idProjet,{headers:{'Authorization':`Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYW5hbGxsQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJNQU5BR0VSIn1dLCJleHAiOjE2MjI4OTI3ODd9.afwEcu7TFekQGFtN4VCKGzLDZQNlGac2zZozSnjqHE1TXtpSBj5AieJZB0DPwRfRIFY6ta1657hM33egvHgxIA `}})
+              .then(response => (
+                this.employeDisponible=response.data
+              ));  
+
+             
+
+            },
   }
 </script>

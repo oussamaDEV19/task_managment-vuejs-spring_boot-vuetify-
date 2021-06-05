@@ -22,5 +22,5 @@ export default {
     setDisabled (state, disabled) {
       state.disabled = disabled
     }
-  }
+  },
 }

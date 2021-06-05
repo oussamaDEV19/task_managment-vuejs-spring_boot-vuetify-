@@ -2,19 +2,18 @@
   <v-app>
   <v-data-table
     :headers="headers"
-    :items="users"
-    sort-by="name"
+    :items="listesEmploye"
+    sort-by="nom"
     class="elevation-1 ma-5"
   >
     <template v-slot:top>
-      <v-toolbar
-        flat
-      >
+      <v-toolbar flat >
         <v-divider
           class="mx-4"
           inset
           vertical
-        ></v-divider>
+        >
+        </v-divider>
         <v-spacer></v-spacer>
         <v-dialog
           v-model="dialog"
@@ -60,7 +59,7 @@
                 text
                 @click="save"
               >
-                Envoiyer
+                Envoyer
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -102,6 +101,7 @@
 
 <script>
   export default {
+    props:['listesEmploye'],
     components: {
       
     },
@@ -113,24 +113,14 @@
           text: 'Full Name',
           align: 'start',
           sortable: false,
-          value: 'name',
+          value: 'employee.nom',
         },
-        { text: 'Email', value: 'email' },
-        { text: 'Tache', value: 'tache' },
+        { text: 'Email', value: 'employee.email' },
+        { text: 'Tache', value: 'description' },
         { text: 'Actions', value: 'actions', sortable: false },
       ],
       users: [],
       editedIndex: -1,
-      editedItem: {
-        name: 'oussama el aaoumari',
-        email: 'ousssama@gmail.com',
-        tache:"conception"
-      },
-      defaultItem: {
-        name: 'oussama el aaoumari',
-        email: 'ousssama@gmail.com',
-       tache:"conception"
-      },
     }),
 
     computed: {
@@ -154,58 +144,7 @@
 
     methods: {
       initialize () {
-        this.users = [
-          {
-            name: 'oussama el aaoumari',
-            email: 'ousssama@gmail.com',
-           tache:"conception"
-          },
-          {
-            name: 'oussama el aaoumari',
-        email: 'ousssama@gmail.com',
-        tache:"conception"
-          },
-          {
-            name: 'oussama el aaoumari',
-        email: 'ousssama@gmail.com',
-        tache:"conception"
-          },
-          {
-            name: 'oussama el aaoumari',
-        email: 'ousssama@gmail.com',
-        tache:"conception"
-          },
-          {
-            name: 'oussama el aaoumari',
-        email: 'ousssama@gmail.com',
-        tache:"conception"
-          },
-          {
-            name: 'oussama el aaoumari',
-        email: 'ousssama@gmail.com',
-        tache:"conception"
-          },
-          {
-            name: 'oussama el aaoumari',
-        email: 'ousssama@gmail.com',
-        tache:"conception"
-          },
-          {
-            name: 'oussama el aaoumari',
-        email: 'ousssama@gmail.com',
-        tache:"conception"
-          },
-          {
-            name: 'oussama el aaoumari',
-        email: 'ousssama@gmail.com',
-        tache:"conception"
-          },
-          {
-            name: 'oussama el aaoumari',
-        email: 'ousssama@gmail.com',
-        tache:"conception"
-          },
-        ]
+       
       },
 
       editItem (item) {

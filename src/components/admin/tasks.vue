@@ -46,6 +46,12 @@
                     label="message"
                     required
                   ></v-textarea>
+                  <v-file-input
+                    truncate-length="15"
+                    v-modal="fileCahierDeCharge"
+                  >
+            
+                  </v-file-input>
 
               </v-col>
               <v-col
@@ -250,6 +256,7 @@
         dialog: false,
         expanded: [],
         singleExpand: false,
+        fileCahierDeCharge:"",
         tasksHeaders: [
           {
             text: 'Task Name',

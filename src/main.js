@@ -12,6 +12,8 @@ import '@/styles/styles.scss'
 
 Vue.config.productionTip = false
 
+axios.defaults.baseURL='http://localhost:8081'
+
 router.beforeEach((to, from, next) => {
   if (!db.getters.loggedIn && to.path != '/auth/signin/identifier' && to.path != '/' && to.path !='/auth/signin/password' && to.path !='/auth/signup') {
     next('/auth/signin/identifier')

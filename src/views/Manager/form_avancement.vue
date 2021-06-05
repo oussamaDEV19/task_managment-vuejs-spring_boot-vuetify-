@@ -18,8 +18,13 @@
           v-model="avancement.titre"
           label="Value must match"
         ></v-text-field>
+        <v-text-field 
+          v-model="avancement.idProjet"
+          v-if="false"
+        >
+        </v-text-field>
         <div class="text-xs-center">
-        <v-btn @click="submit()" class="green accent-4"  dark >Confermer</v-btn>
+        <v-btn @click="submit()" class="green accent-4"  dark >Confirmer</v-btn>
         </div>
       </v-form>
         </v-container>
@@ -33,6 +38,7 @@
 <script>
   import { projet } from '../../store/projet'
   export default {
+    props:['idProjet'],
     components: {
     },
 
@@ -41,14 +47,14 @@
         ex3: { label: 'Avancement : ', val: 50, color: 'red' },
         avancement:{
           titre:'',
-          score:''
+          score:'',
+          idProjet:''
         }  
     }),
     methods: {
       submit(){
-        console.log("heyyyyyyyyyy");
-        console.log(this.avancement.titre);
-        console.log(this.avancement.score);
+        this.avancement.idProjet=this.idProjet;
+
         projet.dispatch('envoyer',this.avancement)
         this.dialog = false;
 

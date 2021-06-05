@@ -26,7 +26,7 @@
       :disabled="!valid"
       color="success"
       class="mr-4 mt-3"
-      @click="validate"
+      @click="envoyer()"
     >
       Send Message
     </v-btn>
@@ -63,8 +63,9 @@
     }),
 
     methods: {
-      validate () {
+      envoyer(){
         this.$refs.form.validate()
+        projet.dispatch('envoyer',this.avancement)
       },
       reset () {
         this.$refs.form.reset()
