@@ -69,7 +69,6 @@ export default {
       drawer: false,
       links: [
         {icon : 'mdi-view-dashboard', text : 'Dashboard', route : '/dashboard'},
-        {icon : 'mdi-account-details', text : 'My Employees', route : '/employees'},
         {icon : 'mdi-calendar-check', text : 'All Tasks', route : '/tasks'},
         {icon : 'mdi-shield-account', text : 'My Managers', route : '/managers'},
         {icon : 'mdi-message-bulleted', text : 'Send Messages', route : '/messages'},

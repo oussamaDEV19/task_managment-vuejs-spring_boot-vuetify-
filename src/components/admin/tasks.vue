@@ -128,116 +128,97 @@
 
   <v-data-table
     :headers="tasksHeaders"
-    :items="desserts"
-    :single-expand="singleExpand"
-    :expanded.sync="expanded"
-    item-key="name"
-    show-expand
+    :items="tasks"
+    item-key="titre"
     class="elevation-1 ma-5"
   >
-    <template v-slot:top>
-      <v-toolbar flat>
-        <v-toolbar-title>Tasks Table</v-toolbar-title>  
-        <v-spacer></v-spacer>
-        <v-switch
-          v-model="singleExpand"
-          label="Single expand"
-          class="mt-2"
-        ></v-switch>
-      </v-toolbar>
-    </template>
+
     
-    <template v-slot:expanded-item="{ headers, item }">
-        
-      <td :colspan="headers.length">
-            <v-timeline
-            align-top
-            dense
-            class="ma-5"
-        >
-            <v-timeline-item
-            color="green"
-            small
-            >
-            <v-row class="pt-1">
-                <v-col cols="1">
-                <strong>21-04-2021</strong>
-                </v-col>
-                <v-col >
-                <strong>Mobile App task</strong>
-                <div class="caption">
-                    with kotlin
-                </div>
-                </v-col>
-            </v-row>
-            </v-timeline-item>
-
-            <v-timeline-item
-            color="teal lighten-3"
-            small
-            >
-            <v-row class="pt-1">
-                <v-col cols="1">
-                <strong>22-04-2021</strong>
-                </v-col>
-                <v-col >
-                <strong>start conception part</strong>
-                <div class="caption">
-                    using adobe xd,ulistrator
-                </div>
-                </v-col>
-            </v-row>
-            </v-timeline-item>
-
-            <v-timeline-item
-            color="teal lighten-3"
-            small
-            >
-            <v-row class="pt-1">
-                <v-col cols="1">
-                <strong>24-04-2021</strong>
-                </v-col>
-                <v-col >
-                <strong>start development part</strong>
-                <div class="caption">
-                    Using kotlin, android studio, sqlite
-                </div>
-                </v-col>
-            </v-row>
-            </v-timeline-item>
-
-            <v-timeline-item
-            color="red"
-            small
-            >
-            <v-row class="pt-1">
-                <v-col cols="1">
-                <strong>29-04-2021</strong>
-                </v-col>
-                <v-col >
-                <strong>Finish the application</strong>
-                <div class="caption">
-                    deploy and hosting
-                </div>
-                </v-col>
-            </v-row>
-            </v-timeline-item>
-        </v-timeline>
-      </td>
-    </template>
-    <template v-slot:item.state="{ item }">
+  
+    <template v-slot:item.status="{ item }">
       <v-chip
-        :color="getColor(item.state)"
+        :color="getColor(item.status)"
         dark
       >
-        {{ item.state }}
+        {{ item.status }}
       </v-chip>
     </template>
+
+    <template v-slot:item.action="{ item }">
+      <v-btn
+      rounded
+      small
+      color="red"
+      dark
+      @click="deleteProjet(item)"
+    >
+      Delete
+    </v-btn>
+    <v-btn
+      rounded
+      small
+      color="green"
+      dark
+      @click="avancementsProjet(item)"
+      class="ml-6"
+    >
+      Show Avancements
+    </v-btn>
+    </template>
+
+
   </v-data-table>
+
+<v-dialog v-model="dialog2" width="400">
+  <v-row >
+      <v-card width="400" class="mr-1 ml-6 mt-2 mb-2">
+        <v-card-text>
+          <div class="font-weight-bold ml-8 mb-2">
+            Avancement du Projet {{ this.prj_selected }}
+            
+          </div>
+
+          <v-timeline
+            align-top
+            dense
+          >
+            <v-timeline-item
+              v-for="avc in avcProjects"
+              :key="avc.time"
+              :color="avc.color"
+              small
+            >
+              <div>
+                
+                <div class="font-weight-normal">
+                  
+                  <strong>{{ avc.date_ajout }}</strong>
+                </div>
+                <div><strong>{{ avc.titre }}</strong></div>
+                <strong>Progression : </strong>
+                <v-progress-linear
+                  color="light-blue"
+                  height="10"
+                  :value=avc.score
+                  striped
+                ></v-progress-linear>
+              </div>
+            </v-timeline-item>
+          </v-timeline>
+        </v-card-text>
+      </v-card>
+    </v-row>
+</v-dialog>
 
 
   
   </v-app>
+
+
+
+    
+
+
 </template>
 
 <script>
@@ -256,6 +237,7 @@ import { db } from '../../store/db'
         titre: "",
         manager: "",
         managerId: "",
+        dialog2 : false,
       menu: false,
       modal: false,
       menu2: false,
@@ -263,102 +245,37 @@ import { db } from '../../store/db'
         expanded: [],
         singleExpand: false,
         fileCahierDeCharge:"",
+        prj_selected: "",
         tasksHeaders: [
           {
             text: 'Task Name',
             align: 'start',
             sortable: false,
-            value: 'name',
-          },
-          { text: 'Employees', value: 'Employees' },
-          { text: 'Managers', value: 'Managers' },
-          { text: 'Deadline (Days)', value: 'Deadline' },
-          { text: 'N sub tasks', value: 'n_sub_tasks' },
-          { text: 'Price', value: 'Price' },
-          { text: 'progression (%)', value: 'progression' },
-          { text: 'Task State', value: 'state' },
-          { text: '', value: 'data-table-expand' },
+            value: 'titre',
+          },  
+          { text: 'Manager', value: 'manager_project' },
+          { text: 'Deadline (Days)', value: 'date_fin' },
+          { text: 'Task State', value: 'status' },
+          { text: 'Actions', value: 'action' ,
+            sortable: false},
         ],
-        desserts: [
-          {
-            name: 'Kotlin Application , QCM',
-            Employees: "khalid moussaoui , nassim larouji",
-            Managers: "said chadi",
-            Deadline: 20,
-            n_sub_tasks: 3,
-            Price: 4000,
-            progression: '40%',
-            state: "Finished"
-          },
-          {
-            name: 'JEE',
-            Employees: "khalid moussaoui , nassim larouji",
-            Managers: "said chadi",
-            Deadline: 20,
-            n_sub_tasks: 3,
-            Price: 4000,
-            progression: '40%',
-            state: "Finished"
-          },
-          {
-            name: 'Laravel , Angular Store',
-            Employees: "khalid moussaoui , nassim larouji",
-            Managers: "said chadi",
-            Deadline: 20,
-            n_sub_tasks: 3,
-            Price: 4000,
-            progression: '40%',
-            state: "Under Processing"
-          },
-          {
-            name: 'API - Fecebook',
-            Employees: "khalid moussaoui , nassim larouji",
-            Managers: "said chadi",
-            Deadline: 20,
-            n_sub_tasks: 3,
-            Price: 4000,
-            progression: '40%',
-            state: "Cancelled"
-          },
-          {
-            name: 'Ebay Tool Ranking',
-            Employees: "khalid moussaoui , nassim larouji",
-            Managers: "said chadi",
-            Deadline: 20,
-            n_sub_tasks: 3,
-            Price: 4000,
-            progression: '40%',
-            state: "Finished"
-          },
-          {
-            name: 'Amazon Resell Template',
-            Employees: "khalid moussaoui , nassim larouji",
-            Managers: "said chadi",
-            Deadline: 20,
-            n_sub_tasks: 3,
-            Price: 4000,
-            progression: '40%',
-            state: "Under Processing"
-          },
-          {
-            name: 'C# Program , statistics',
-            Employees: "khalid moussaoui , nassim larouji",
-            Managers: "said chadi",
-            Deadline: 20,
-            n_sub_tasks: 3,
-            Price: 4000,
-            progression: '40%',
-            state: "Created"
-          },
-        ],
+        tasks: [],
+        avcProjects: [],
       }
     },
     methods: {
-            getColor (state) {
-                if (state == "Created") return 'blue'
-                else if (state == "Under Processing") return 'orange'
-                else if (state == "Finished") return 'green'
-                else if (state == "Cancelled") return 'red'
+      initialize () {
+        
+        setTimeout(() => {
+            this.tasks = db.getters.AllProjects
+          }, 600)
+        
+      },
+            getColor (status) {
+                if (status == "Created") return 'blue'
+                else if (status == "Under Processing") return 'orange'
+                else if (status == "Finished") return 'green'
+                else if (status == "Cancelled") return 'red'
             },
             AddProjet () {
               this.dialog = false
@@ -386,27 +303,70 @@ import { db } from '../../store/db'
                 
               })
 
+              
+
+              
+
             },
             GetIdSelected(userId){
               var i
               for(i = 0 ; i < db.getters.AllUsers.length ; i++){
+                
                 var tt = db.getters.AllUsers[i].nom + " " + db.getters.AllUsers[i].prenom
                 if(tt == this.manager){
                   this.managerId = db.getters.AllUsers[i].userId 
                 }
-                this.users.push(db.getters.AllUsers[i].nom + " " + db.getters.AllUsers[i].prenom)
+                //this.users.push(db.getters.AllUsers[i].nom + " " + db.getters.AllUsers[i].prenom)
+              
+                
               }
-              console.log(this.managerId)
+              
             },
+        deleteProjet (item) {
+          this.tasks.splice(this.tasks.indexOf(item), 1)
+          db.dispatch('deleteProjet', item.prjet_id)
+        },
+        avancementsProjet(item){
+          this.avcProjects = null
+          
+            this.dialog2 = true
+            this.prj_selected = item.titre
+            
+            db.dispatch('RetrieveAvancementProjects' , item.prjet_id).then( () => {
+              setTimeout(() => {
+              this.avcProjects = db.getters.AllAvancementProjects
+              }, 100)
+            })
+          
+          
+          
+         
+            
+         
+
+          // score titre date_ajout color
+
+        }
         },
         created () {
+
+          db.dispatch('RetrieveProjects')
+          
+          
+          setTimeout(() => {
+            this.initialize()
+            
+          }, 1)
+
+
           db.dispatch('RetrieveUsers')
           setTimeout(() => {
             var i
             //console.log(db.getters.AllUsers.length)
             for(i = 0 ; i < db.getters.AllUsers.length ; i++){
-              this.users.push(db.getters.AllUsers[i].nom + " " + db.getters.AllUsers[i].prenom)
-
+              if(db.getters.AllUsers[i].role == "MANAGER"){
+                this.users.push(db.getters.AllUsers[i].nom + " " + db.getters.AllUsers[i].prenom)
+              }
             }
         //this.users = db.getters.AllUsers[0].nom
       }, 5)
