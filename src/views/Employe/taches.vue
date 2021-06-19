@@ -1,9 +1,8 @@
-
 <template>
   <v-app>
   <v-data-table
     :headers="tasksHeaders"
-    :items="desserts"
+    :items="infostacheEmploye"
     :single-expand="singleExpand"
     :expanded.sync="expanded"
     item-key="tache"
@@ -32,74 +31,19 @@
             <v-timeline-item
             color="green"
             small
-            >
+            v-for="ite in item.avancementTache">
             <v-row class="pt-1">
                 <v-col cols="1">
-                <strong>21-04-2021</strong>
+                <strong>{{ite.score}}</strong>
                 </v-col>
                 <v-col >
-                <strong>Mobile App task</strong>
+                <strong>{{ite.date_ajout}}</strong>
                 <div class="caption">
-                    with kotlin
+                  {{ite.titre}}
                 </div>
                 </v-col>
             </v-row>
-            </v-timeline-item>
-
-            <v-timeline-item
-            color="teal lighten-3"
-            small
-            >
-            <v-row class="pt-1">
-                <v-col cols="1">
-                <strong>22-04-2021</strong>
-                </v-col>
-                <v-col >
-                <strong>start conception part</strong>
-                <div class="caption">
-                    using adobe xd,ulistrator
-                </div>
-                </v-col>
-            </v-row>
-            </v-timeline-item>
-
-            <v-timeline-item
-            color="teal lighten-3"
-            small
-            >
-            <v-row class="pt-1">
-                <v-col cols="1">
-                <strong>24-04-2021</strong>
-                </v-col>
-                <v-col >
-                <strong>start development part</strong>
-                <div class="caption">
-                    Using kotlin, android studio, sqlite
-                </div>
-                </v-col>
-            </v-row>
-            </v-timeline-item>
-
-            <v-timeline-item
-            color="red"
-            small
-            >
-            <v-row class="pt-1">
-                <v-col cols="1">
-                <strong>29-04-2021</strong>
-                </v-col>
-                <v-col >
-                <strong>Finish the application</strong>
-                <div class="caption">
-                    deploy and hosting
-                </div>
-                
-                </v-col>
-                
-            </v-row>
-            
-            </v-timeline-item>
-            
+            </v-timeline-item>            
         </v-timeline>
          <v-row>
               <v-col></v-col>
@@ -107,7 +51,7 @@
               <v-col>
               </v-col>
               <v-col>
-                  <formA />
+                  <formA  :idTache="item.tache_id"/>
               </v-col>
             </v-row>
       </td>
@@ -116,12 +60,12 @@
    
 
 
-    <template v-slot:item.state="{ item }">
+    <template v-slot:item.status="{item}">
       <v-chip
-        :color="getColor(item.state)"
+        :color="getColor(item.status)"
         dark
       >
-        {{ item.state }}
+        {{ item.status }}
       </v-chip>
       
     </template>
@@ -136,6 +80,7 @@
 
 
 <script>
+  import axios from 'axios'
   export default {
     components: {
       
@@ -158,57 +103,15 @@
             text: 'Tache',
             align: 'start',
             sortable: false,
-            value: 'tache',
+            value: 'titre',
           },
-          { text: 'Manager', value: 'Manager' },
+          { text: 'Manager', value: 'manager' },
           { text: 'Deadline (Days)', value: 'Deadline' },
           { text: 'progression (%)', value: 'progression' },
-          { text: 'Task State', value: 'state' },
+          { text: 'Task State', value: 'status' },
           { text: '', value: 'data-table-expand' },
         ],
-        desserts: [
-          {
-            projet: 'Kotlin Application , QCM',
-            tache: 'conception',
-            Manager:'dodo',
-            Deadline: 20,
-            progression: '40%',
-            state: "Finished"
-          },
-          {
-            projet: 'Kotlin Application , QCM',
-            tache: 'desgin',
-            Manager:'dodo',
-            Deadline: 20,
-            progression: '40%',
-            state: "Finished"
-          },
-          {
-            projet: 'Kotlin Application , QCM',
-            tache: 'front-end',
-            Manager:'dodo',
-            Deadline: 20,
-            progression: '40%',
-            state: "Finished"
-          },
-          {
-            projet: 'Kotlin Application , QCM1',
-            tache: 'back-end',
-            Manager:'dodo',
-            Deadline: 20,
-            progression: '40%',
-            state: "Finished"
-          },
-          {
-            projet: 'Kotlin Application , QCM',
-            tache: 'deploiment',
-            Manager:'dodo',
-            Deadline: 20,
-            progression: '40%',
-            state: "Finished"
-          },
-          
-        ],
+        infostacheEmploye:[],
       }
     },
     methods: {
@@ -218,6 +121,20 @@
                 else if (state == "Finished") return 'green'
                 else if (state == "Cancelled") return 'red'
             },
+             calculDernierScore (state) {
+                if (state == "Created") return 'blue'
+                else if (state == "Under Processing") return 'orange'
+                else if (state == "Finished") return 'green'
+                else if (state == "Cancelled") return 'red'
+            },
         },
+        mounted(){
+      console.log("heyyyyy");
+      axios
+      .get('http://localhost:8081/tache/getTacheEmploye',{headers:{'Authorization':`Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbmFzQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJFTVBMT1lFRSJ9XSwiZXhwIjoxNjI0MDM1NTI2fQ.4TWLXXPMRctpomYaElTvvbJJMkJnkqFZG1scFvm9cd07WVokx6CrxbiQtnXfn5zt4iZ0qE-DB9tldT3_CRzuYw `}})
+      .then(response => (this.infostacheEmploye= response.data));  
+      console.log("heyyyyy222");
+   
+      }
   }
 </script>

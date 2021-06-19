@@ -5,6 +5,7 @@ import axios from 'axios'
 Vue.use(Vuex)
 
 
+
 export const db = new Vuex.Store( {
 
   state: {
@@ -12,7 +13,13 @@ export const db = new Vuex.Store( {
     users: [],
     projects: [],
     AvancementProjects: [],
-    managers: []
+    managers: [],
+    admin_name: "",
+    total_users: 0,
+    prj_proc: 0,
+    prj_done: 0,
+    prj_total: 0,
+    prj_canc: 0,
   },
   getters: {
     loggedIn(state) {
@@ -29,10 +36,46 @@ export const db = new Vuex.Store( {
     },
     Allmanagers(state){
       return state.managers
+    },
+    getNameAdmin(state){
+      return state.admin_name
+    },
+    get_total_users(state){
+      return state.total_users
+    },
+    get_prj_proc(state){
+      return state.prj_proc
+    },
+    get_prj_done(state){
+      return state.prj_done
+    },
+    get_prj_total(state){
+      return state.prj_total
+    },
+    get_prj_canc(state){
+      return state.prj_canc
     }
   },
 
   mutations: {
+    re_prj_canc(state, nb) {
+      state.prj_canc = nb
+    },
+    re_prj_total(state, nb) {
+      state.prj_total = nb
+    },
+    re_prj_done(state, nb) {
+      state.prj_done = nb
+    },
+    re_prj_proc(state, nb) {
+      state.prj_proc = nb
+    },
+    re_total_users(state, nb) {
+      state.total_users = nb
+    },
+    getAdminName(state, admin) {
+      state.admin_name = admin
+    },
     destroyToken(state) {
       state.token = null
     },
@@ -159,7 +202,8 @@ export const db = new Vuex.Store( {
   
         axios.get('http://localhost:8081/users')
         .then(response => {
-          //console.log(response.data)
+          console.log(response.data)
+
           context.commit('RetrieveUsers', response.data)
         })
         .catch(error => {
@@ -241,12 +285,16 @@ export const db = new Vuex.Store( {
     RetrieveProjects(context) {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token')
 
-      
-
-      axios.get('http://localhost:8081/projets')
+      var base64Url = localStorage.getItem('access_token').split('.')[1];
+      var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+    
+      var email = JSON.parse(jsonPayload).sub
+      console.log(email)
+      axios.get('http://localhost:8081/projets/admin/' + email)
       .then(response => {
-        
-        
         
         response.data.forEach(element => {
           var aDay = 86400000;
@@ -313,8 +361,8 @@ export const db = new Vuex.Store( {
         .then(response => {
           var managers = [];
           var managers_id = [];
-          const n_tasks = [];
-          const done = [];const processing = [];const cancelled = [];
+          var n_tasks = [];
+          var done = [];var processing = [];var cancelled = [];
 
           response.data.forEach(element => {
             managers.push(element.manager.nom + " " +  element.manager.prenom);
@@ -364,9 +412,21 @@ export const db = new Vuex.Store( {
           console.log(done);
           console.log(cancelled);
           
+          var total_users = 0;
+          var prj_proc = 0;
+          var prj_done = 0;
+          var prj_total = 0;
+          var prj_canc = 0;
           var k = 0;
+
           response1.data.forEach(element => {
-            if(element.role == "MANAGER"){
+            if(element.role == "MANAGER" && managers[k] !== undefined){
+              total_users += managers[k];
+              prj_proc += processing[k];
+              prj_done += done[k];
+              prj_total += n_tasks[k];
+              prj_canc += cancelled[k];
+              
               element.name =  managers[k];
               element.n_tasks =  n_tasks[k];
               element.done =  done[k];
@@ -378,6 +438,14 @@ export const db = new Vuex.Store( {
               
           })
           
+          context.commit('re_total_users', k)
+          context.commit('re_prj_proc', prj_proc)
+          context.commit('re_prj_done', prj_done)
+          context.commit('re_prj_total', prj_total)
+          context.commit('re_prj_canc', prj_canc)
+
+
+          
         })
         context.commit('RetrieveManagers', response1.data)
         .catch(error => {
@@ -388,8 +456,31 @@ export const db = new Vuex.Store( {
         console.log(error)
       })
     },
+    getAdminName(context, email) {
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token')
+
+      var base64Url = localStorage.getItem('access_token').split('.')[1];
+      var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+    
+      var email = JSON.parse(jsonPayload).sub
+
+      axios.get('http://localhost:8081/users/' + email)
+      .then(response => {
+        
+        console.log(response.data.nom)
+        context.commit('getAdminName', (response.data.prenom + " " + response.data.nom).toUpperCase() );
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
 
   },
   
 }
 )
+
+

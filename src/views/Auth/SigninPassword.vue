@@ -91,8 +91,25 @@ export default {
         password: this.passwordd,
       })
         .then(response => {
-          this.$router.push({ name: 'dashboard' })
+
+          if(this.parseJwt(response.data.token).roles[0].authority  == "ADMIN"){
+            this.$router.push({ name: 'dashboard' })
+          }else if(this.parseJwt(response.data.token).roles[0].authority == "EMPLOYEE"){
+            this.$router.push({ name: 'Employe' })
+          }else{
+            this.$router.push({ name: 'Manager' })
+          }
+          
         })
+    },
+    parseJwt (token) {
+      var base64Url = token.split('.')[1];
+      var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+
+      return JSON.parse(jsonPayload);
     }
   }
 }

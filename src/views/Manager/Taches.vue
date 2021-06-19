@@ -219,8 +219,8 @@
             CreerTache(){
               const current = new Date();
               console.log(current);
-              var mm = "";
-              var dd="";
+              var mm = current.getMonth();
+              var dd=current.getDate();
               if(current.getMonth() <10){
                 mm = "0" + current.getMonth();
               }
@@ -228,9 +228,8 @@
                 dd = "0" + current.getDate();
               }
                 const dateD = `${current.getFullYear()}-${mm}-${dd}`;               
-
                 console.log(this.date_fin);
-
+                console.log("ggg");
                 console.log(dateD);
                 projet.dispatch('creerTache',{
                 titre: this.titre,
@@ -244,13 +243,11 @@
             },
         },
         mounted(){
-              axios.get('http://localhost:8081/users/getEmployeParTaches/'+this.idProjet,{headers:{'Authorization':`Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYW5hbGxsQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJNQU5BR0VSIn1dLCJleHAiOjE2MjI4OTI3ODd9.afwEcu7TFekQGFtN4VCKGzLDZQNlGac2zZozSnjqHE1TXtpSBj5AieJZB0DPwRfRIFY6ta1657hM33egvHgxIA `}})
+              axios.get('http://localhost:8081/users/getEmployeParTaches/'+this.idProjet,{headers:{'Authorization':`Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtdXN0YXBoYTFAZ21haWwuY29tIiwicm9sZXMiOlt7ImF1dGhvcml0eSI6Ik1BTkFHRVIifV0sImV4cCI6MTYyMzg3OTU3M30.rM-QJy7XPHjDDmo_6QHZ68-JAqkHT_y94Hc1sYBZK7fp3fXpRSY_OL9OXd3YR9J_Lw9uajRFeaX8HMtbxJqzOw `}})
               .then(response => (
                 this.employeDisponible=response.data
               ));  
-
              
-
             },
   }
 </script>

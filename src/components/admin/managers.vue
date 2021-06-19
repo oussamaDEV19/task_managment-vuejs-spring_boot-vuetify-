@@ -67,8 +67,9 @@ import { db } from '../../store/db'
           }, 1)
           var i = 0;
           setTimeout(() => {
+
             for(i = 0 ; i < db.getters.Allmanagers.length ; i++){
-              if(db.getters.Allmanagers[i].role == "MANAGER"){
+              if(db.getters.Allmanagers[i].role == "MANAGER" && db.getters.Allmanagers[i].n_tasks != null){
                 this.managers.push(db.getters.Allmanagers[i])
               }
             }

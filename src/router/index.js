@@ -10,6 +10,7 @@ import Dashboard from '@/views/dashboard'
 import Employees from '@/components/admin/employees'
 import Tasks from '@/components/admin/tasks'
 import Managers from '@/components/admin/managers'
+import Error from '@/components/admin/error'
 import Messages from '@/components/admin/messages'
 import CrudUsers from '@/components/admin/crudUsers'
 import HomePage from '@/views/homePage'
@@ -59,6 +60,11 @@ const routes = [{
         name: 'Tasks'
     },
     {
+        path: '/error',
+        component: Error,
+        name: 'Error'
+    },
+    {
         path: '/Managers',
         component: Managers,
         name: 'Managers'
@@ -81,6 +87,7 @@ const routes = [{
     {
         path: '/employe',
         component: Employe,
+        name: 'Employe',
         children: [{
             path: 'messages',
             name: 'messagesEmp',
@@ -108,6 +115,7 @@ const routes = [{
     {
         path: '/manager',
         component: Manager,
+        name: 'Manager',
         children: [{
             path: 'messages',
             name: 'messagesManager',

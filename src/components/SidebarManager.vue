@@ -46,7 +46,7 @@
 </template>
 
 <script>
-
+import { db } from '../store/db'
 
 export default {
   data() {
@@ -64,7 +64,10 @@ export default {
   },
   methods: {
     logout() {
-
+      db.dispatch('destroyToken')
+      .then(response => {
+        this.$router.push({ name: 'HomePage' })
+      })
     }
   },
 };

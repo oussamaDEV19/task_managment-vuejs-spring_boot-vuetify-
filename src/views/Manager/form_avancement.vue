@@ -41,7 +41,6 @@
     props:['idProjet'],
     components: {
     },
-
     data: () => ({
         dialog: false,
         ex3: { label: 'Avancement : ', val: 50, color: 'red' },
@@ -49,18 +48,14 @@
           titre:'',
           score:'',
           idProjet:''
-        }  
+                  }  
     }),
     methods: {
       submit(){
         this.avancement.idProjet=this.idProjet;
-
         projet.dispatch('envoyer',this.avancement)
         this.dialog = false;
-
       }
     },
   }
 </script>
-
-

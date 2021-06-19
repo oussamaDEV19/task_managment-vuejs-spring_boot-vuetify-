@@ -13,7 +13,7 @@
               cols="12"
               sm="4"
               class="text-center"
-              v-for="(feature, i) in features"
+              v-for="(feature, i) in infosProjetEmploye"
               :key="i"
             >
               <v-hover v-slot:default="{ hover }">
@@ -24,15 +24,15 @@
                   :class="{ up: hover }"
                 >
                   <v-img
-                    :src="feature.img"
+                    :src="img"
                     max-width="100px"
                     class="d-block ml-auto mr-auto"
                     :class="{ 'zoom-efect': hover }"
                   ></v-img>
-                  <h1 class="font-weight-regular">{{ feature.title }}</h1>
-                  <h2 class="font-weight-regular " >{{ feature.manager }}</h2>
+                  <h1 class="font-weight-regular">{{ feature.titre }}</h1>
+                  <h2 class="font-weight-regular " >{{ feature.manager.nom }}</h2>
                   <h4 class="font-weight-regular subtitle-1">
-                    {{ feature.text }}
+                    {{ feature.description }}
                   </h4>
                 </v-card>
               </v-hover>
@@ -44,40 +44,23 @@
 </template>
 
 <script>
+  import axios from 'axios'
   export default {
     components: {
       SideBar: () => import('@/components/SidebarEmp'),
       
     },
-
     data: () => ({ 
-        features: [
-        {
-          img: require("@/assets/img/projet.png"),
-          manager:"Hadou",
-          title: "Projet Name",
-          text: "Statistics , manage all (employees,managers,tasks) , You are the Leader here.",
-        },
-        {
-          img: require("@/assets/img/projet.png"),
-          manager:"dounia",
-          title: "Projet Name",
-          text: "Add employees , affect tasks to them and check all progression !",
-        },
-        {
-          img: require("@/assets/img/projet.png"),
-          manager:"dounia",
-          title: "Projet Name",
-          text: "Login , and start Mark your Tasks and see your progression !!",
-        },
-         {
-          img: require("@/assets/img/projet.png"),
-          manager:"dounia",
-          title: "Projet Name",
-          text: "Login , and start Mark your Tasks and see your progression !!",
-        },
-      ],
+      img: require("@/assets/img/projet.png"),
+      infosProjetEmploye: []
     }),
+    mounted(){
+      console.log("heyyyyy");
+      axios
+      .get('http://localhost:8081/projets/getProjetEmploye',{headers:{'Authorization':`Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbmFzQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJFTVBMT1lFRSJ9XSwiZXhwIjoxNjI0MDM1NTI2fQ.4TWLXXPMRctpomYaElTvvbJJMkJnkqFZG1scFvm9cd07WVokx6CrxbiQtnXfn5zt4iZ0qE-DB9tldT3_CRzuYw `}})
+      .then(response => (this.infosProjetEmploye= response.data));  
+      console.log("heyyyyy222");
+   
+      }
   }
 </script>
-

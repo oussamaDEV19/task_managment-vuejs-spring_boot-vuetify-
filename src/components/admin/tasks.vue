@@ -278,6 +278,7 @@ import { db } from '../../store/db'
                 else if (status == "Cancelled") return 'red'
             },
             AddProjet () {
+              
               this.dialog = false
               console.log(this.titre)
               console.log(this.description)
@@ -303,9 +304,18 @@ import { db } from '../../store/db'
                 
               })
 
-              
+              setTimeout(() => {
+            db.dispatch('RetrieveProjects')
+            
+          }, 500)
+          
+          setTimeout(() => {
+            this.initialize()
+            
+          }, 1000)
 
-              
+
+          
 
             },
             GetIdSelected(userId){
@@ -369,7 +379,7 @@ import { db } from '../../store/db'
               }
             }
         //this.users = db.getters.AllUsers[0].nom
-      }, 5)
+      }, 1000)
       
             
         },

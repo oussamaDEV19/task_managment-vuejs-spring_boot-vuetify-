@@ -81,22 +81,18 @@
                       label="Email"
                     ></v-text-field>
                   </v-col>
-                  <v-col
-                    cols="12"
-                    
-                  >
-                    <v-text-field
-                      v-model="editedItem.password"
-                      label="Password"
-                    ></v-text-field>
-                  </v-col>
+
                   <v-col
                 cols="12"
               >
+              <!--
                 <v-text-field
                       v-model="editedItem.role"
                       label="Role"
                     ></v-text-field>
+                    -->
+
+                    <v-select  v-model="selectedRole" label="Role" :items="role"></v-select>
               </v-col>
                 </v-row>
               </v-container>
@@ -191,8 +187,10 @@ import { db } from '../../store/db'
         { text: 'Actions', value: 'actions', sortable: false },
       ],
       users: [],
+      role : ["MANAGER" , "EMPLOYEE"],
       editedIndex: -1,
       deleteUserId: -1,
+      selectedRole: null,
       showAdd: false,
       showUpdate: false,
       editedItem: {
@@ -202,7 +200,6 @@ import { db } from '../../store/db'
         "prenom": "mustapha",
         "role": "EMPLOYEE",
         "telephone": "0689826351",
-        "password": "a123456"
       },
       defaultItem: {
         "age": "19",
@@ -211,7 +208,6 @@ import { db } from '../../store/db'
         "prenom": "mustapha",
         "role": "EMPLOYEE",
         "telephone": "0689826351",
-        "password": "a123456"
       },
     }),
 
@@ -242,7 +238,6 @@ import { db } from '../../store/db'
       initialize () {
         this.users = db.getters.AllUsers
       },
-
       editItem (item) {
         this.editedIndex = this.users.indexOf(item)
         this.editedItem = item
@@ -285,20 +280,23 @@ import { db } from '../../store/db'
           Object.assign(this.users[this.editedIndex], this.editedItem)
         } else {
 
+          
+
           this.users.push(this.editedItem)
           db.dispatch('addUser', {
             age: this.editedItem.age,
             email: this.editedItem.email,
             nom: this.editedItem.nom,
             prenom: this.editedItem.prenom,
-            role: this.editedItem.role,
+            role: this.selectedRole,
             telephone: this.editedItem.telephone,
-            password: this.editedItem.password
+            password: "a123456"
           })
             .then(response => {
              
           })  
           
+         
         }
         this.close()
       },

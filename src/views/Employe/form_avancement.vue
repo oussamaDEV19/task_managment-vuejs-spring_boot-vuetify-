@@ -33,28 +33,27 @@
 <script>
   import { projet } from '../../store/projet'
   export default {
+     props:['idTache'],
     components: {
     },
-
     data: () => ({
         dialog: false,
         ex3: { label: 'Avancement : ', val: 50, color: 'red' },
         avancement:{
           titre:'',
-          score:''
+          score:'',
+          idTache:''
         }  
     }),
     methods: {
       submit(){
+        this.avancement.idTache=this.idTache;
         console.log("heyyyyyyyyyy");
         console.log(this.avancement.titre);
         console.log(this.avancement.score);
-        projet.dispatch('envoyer',this.avancement)
+        projet.dispatch('envoyertache',this.avancement)
         this.dialog = false;
-
       }
     },
   }
 </script>
-
-
