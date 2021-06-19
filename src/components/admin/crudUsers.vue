@@ -231,7 +231,7 @@ import { db } from '../../store/db'
       db.dispatch('RetrieveUsers')
       setTimeout(() => {
         this.initialize()
-      }, 1)
+      }, 1000)
       
     },
     methods: {

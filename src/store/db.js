@@ -269,6 +269,7 @@ export const db = new Vuex.Store( {
                 description: credentials.description,
                 date_debut: credentials.date_debut,
                 date_fin: credentials.date_fin,
+                document:credentials.lienDrive
         },
         { useCredentails: true },
        // {headers:{Authorization: "Bearer" + localStorage.getItem('access_token') }}

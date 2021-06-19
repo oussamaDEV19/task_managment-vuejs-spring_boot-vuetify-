@@ -53,7 +53,7 @@ import { db } from '../../store/db'
         
         setTimeout(() => {
             //this.managers = db.getters.Allmanagers
-          }, 500)
+          }, 1000)
       },
     },
     created () {
@@ -64,7 +64,7 @@ import { db } from '../../store/db'
           setTimeout(() => {
             this.initialize()
             
-          }, 1)
+          }, 1000)
           var i = 0;
           setTimeout(() => {
 
@@ -73,7 +73,7 @@ import { db } from '../../store/db'
                 this.managers.push(db.getters.Allmanagers[i])
               }
             }
-          }, 500)
+          }, 1000)
           
 
 

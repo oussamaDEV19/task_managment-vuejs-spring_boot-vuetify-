@@ -93,12 +93,12 @@
           </template>     
       </td>
     </template>
-    <template v-slot:item.state="{ item }">
+    <template v-slot:item.status="{ item }">
       <v-chip
-        :color="getColor(item.state)"
+        :color="getColor(item.status)"
         dark
       >
-        {{ item.titre }}
+        {{ item.status }}
       </v-chip>  
     </template>
   </v-data-table>
@@ -149,10 +149,12 @@ import { projet } from '../../store/projet'
             }
     },
       mounted(){
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token');
       axios
-      .get('http://localhost:8081/projets/getProjetByManager',{headers:{'Authorization':`Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtdXN0YXBoYTFAZ21haWwuY29tIiwicm9sZXMiOlt7ImF1dGhvcml0eSI6Ik1BTkFHRVIifV0sImV4cCI6MTYyMzg3OTU3M30.rM-QJy7XPHjDDmo_6QHZ68-JAqkHT_y94Hc1sYBZK7fp3fXpRSY_OL9OXd3YR9J_Lw9uajRFeaX8HMtbxJqzOw `}})
+      .get('http://localhost:8081/projets/getProjetByManager')
       .then(response => (this.infosProjet= response.data));     
       }
+      
   }
 </script>
 

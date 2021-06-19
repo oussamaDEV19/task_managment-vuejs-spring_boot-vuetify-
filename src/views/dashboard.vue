@@ -182,7 +182,7 @@ import { db } from '../store/db'
             this.items[4].eff = (db.getters.get_prj_canc /db.getters.get_prj_total)*100 
             this.items[5].artist = ((db.getters.get_prj_done /db.getters.get_prj_total)*100).toFixed(1) + '%'
             this.items[5].eff = (db.getters.get_prj_done /db.getters.get_prj_total)*100  
-          }, 1000);
+          }, 3000);
         })
     },
     methods: {

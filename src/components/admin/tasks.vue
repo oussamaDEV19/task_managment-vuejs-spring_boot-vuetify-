@@ -47,13 +47,12 @@
                     label="desciption"
                     required
                   ></v-textarea>
-                  <v-file-input
-                    truncate-length="15"
-                    v-modal="fileCahierDeCharge"
-                  >
-            
-                  </v-file-input>
-
+                
+                 <v-text-field
+                v-model="lienDrive"
+                  label="Lien du Drive"
+                  required
+                ></v-text-field>
               </v-col>
               <v-col
                 cols="12"
@@ -244,7 +243,7 @@ import { db } from '../../store/db'
         dialog: false,
         expanded: [],
         singleExpand: false,
-        fileCahierDeCharge:"",
+        lienDrive:"",
         prj_selected: "",
         tasksHeaders: [
           {
@@ -268,7 +267,7 @@ import { db } from '../../store/db'
         
         setTimeout(() => {
             this.tasks = db.getters.AllProjects
-          }, 600)
+          }, 1000)
         
       },
             getColor (status) {
@@ -299,6 +298,7 @@ import { db } from '../../store/db'
                 date_debut: date,
                 date_fin: this.date,
                 ManagerId : this.managerId,
+                lienDrive:this.lienDrive
               })
                 .then(response => {
                 
@@ -307,7 +307,7 @@ import { db } from '../../store/db'
               setTimeout(() => {
             db.dispatch('RetrieveProjects')
             
-          }, 500)
+          }, 1000)
           
           setTimeout(() => {
             this.initialize()
@@ -345,7 +345,7 @@ import { db } from '../../store/db'
             db.dispatch('RetrieveAvancementProjects' , item.prjet_id).then( () => {
               setTimeout(() => {
               this.avcProjects = db.getters.AllAvancementProjects
-              }, 100)
+              }, 1000)
             })
           
           
@@ -366,7 +366,7 @@ import { db } from '../../store/db'
           setTimeout(() => {
             this.initialize()
             
-          }, 1)
+          }, 1000)
 
 
           db.dispatch('RetrieveUsers')
