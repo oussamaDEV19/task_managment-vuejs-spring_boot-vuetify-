@@ -117,7 +117,7 @@ export const db = new Vuex.Store( {
     addAdmin(context, credentials) {
 
       return new Promise((resolve, reject) => {
-        axios.post('http://localhost:8081/users', {
+        axios.post('http://localhost:9090/users', {
           email:  credentials.email,
           nom:  credentials.nom,
           prenom:  credentials.prenom,
@@ -139,7 +139,7 @@ export const db = new Vuex.Store( {
     retrieveToken(context, credentials) {
 
       return new Promise((resolve, reject) => {
-        axios.post('http://localhost:8081/users/login', {
+        axios.post('http://localhost:9090/users/login', {
           email: credentials.email,
           password: credentials.password,
         },
@@ -176,7 +176,7 @@ export const db = new Vuex.Store( {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token')
 
         return new Promise((resolve, reject) => {
-          axios.post('http://localhost:8081/users', {
+          axios.post('http://localhost:9090/users', {
             age:  credentials.age,
             email:  credentials.email,
             nom:  credentials.nom,
@@ -200,7 +200,7 @@ export const db = new Vuex.Store( {
       RetrieveUsers(context) {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token')
   
-        axios.get('http://localhost:8081/users')
+        axios.get('http://localhost:9090/users')
         .then(response => {
           console.log(response.data)
 
@@ -213,7 +213,7 @@ export const db = new Vuex.Store( {
       deleteUser(context, id) {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token')
 
-        axios.delete('http://localhost:8081/users/' + id)
+        axios.delete('http://localhost:9090/users/' + id)
           .then(response => {
             //context.commit('deleteUser', id)
           })
@@ -245,7 +245,7 @@ export const db = new Vuex.Store( {
             })
           })
 */
-        axios.put('http://localhost:8081/users/' + user.userId, {
+        axios.put('http://localhost:9090/users/' + user.userId, {
           nom : user.nom,
           prenom : user.prenom,
           age : user.age,
@@ -263,7 +263,7 @@ export const db = new Vuex.Store( {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token')
 
       return new Promise((resolve, reject) => {
-        axios.post('http://localhost:8081/projets/' + credentials.ManagerId, {
+        axios.post('http://localhost:9090/projets/' + credentials.ManagerId, {
                 titre: credentials.titre,
                 status: "Created",
                 description: credentials.description,
@@ -294,7 +294,7 @@ export const db = new Vuex.Store( {
     
       var email = JSON.parse(jsonPayload).sub
       console.log(email)
-      axios.get('http://localhost:8081/projets/admin/' + email)
+      axios.get('http://localhost:9090/projets/admin/' + email)
       .then(response => {
         
         response.data.forEach(element => {
@@ -320,7 +320,7 @@ export const db = new Vuex.Store( {
     deleteProjet(context, id) {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token')
 
-      axios.delete('http://localhost:8081/projets/' + id)
+      axios.delete('http://localhost:9090/projets/' + id)
         .then(response => {
           //context.commit('deleteUser', id)
         })
@@ -331,7 +331,7 @@ export const db = new Vuex.Store( {
     RetrieveAvancementProjects(context , id) {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token')
 
-      axios.get('http://localhost:8081/avancementProjet/' + id)
+      axios.get('http://localhost:9090/avancementProjet/' + id)
       .then(response => {
         
         var i = 0;
@@ -356,9 +356,9 @@ export const db = new Vuex.Store( {
     RetrieveManagers(context) {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token')
 
-      axios.get('http://localhost:8081/users').then(response1 => {
+      axios.get('http://localhost:9090/users').then(response1 => {
         
-          axios.get('http://localhost:8081/projets')
+          axios.get('http://localhost:9090/projets')
         .then(response => {
           var managers = [];
           var managers_id = [];
@@ -468,7 +468,7 @@ export const db = new Vuex.Store( {
     
       var email = JSON.parse(jsonPayload).sub
 
-      axios.get('http://localhost:8081/users/' + email)
+      axios.get('http://localhost:9090/users/' + email)
       .then(response => {
         
         console.log(response.data.nom)
