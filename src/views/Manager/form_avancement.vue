@@ -5,7 +5,7 @@
         <v-btn  v-bind="attrs" class="info" dark v-on="on">Ajouter form</v-btn>
       </template>
       <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title>Avancement de tache</v-card-title>
+        <v-card-title class="headline grey lighten-2" primary-title>Avancement de Projet</v-card-title>
         <v-container>
         <v-form >
            <v-slider class="pa-md-6 mx-lg-auto"

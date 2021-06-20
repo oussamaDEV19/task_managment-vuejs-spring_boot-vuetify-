@@ -134,7 +134,8 @@ import { projet } from '../../store/projet'
           },
           { text: 'Date Debut', value: 'date_debut' },
           { text: 'Date Fin ', value: 'date_fin' },
-          { text: 'progression (%)', value: 'status' },
+          { text: 'durée restante ', value: 'deadline' },
+          { text: 'progression (%)', value: 'score' },
           { text: 'Task State', value: 'status' },
           { text: '', value: 'data-table-expand' },
         ],
@@ -152,7 +153,51 @@ import { projet } from '../../store/projet'
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token');
       axios
       .get('http://localhost:8081/projets/getProjetByManager')
-      .then(response => (this.infosProjet= response.data));     
+      .then(response =>{
+       this.infosProjet= response.data
+       
+       response.data.forEach(element => {
+          
+          const dd = new Date(element.date_debut)
+          element.date_debut = dd.toISOString().split('T')[0];
+          const df = new Date(element.date_fin)
+          element.date_fin = df.toISOString().split('T')[0];
+
+        var aDay = 86400000;
+        const current = new Date();
+
+        var diff = Math.floor(
+          (
+            Date.parse(element.date_fin) - Date.parse(current)
+          ) / aDay);
+          //console.log(diff)
+          element.deadline = diff;
+
+          element.avancementsProjet.forEach(elt => {
+          
+          const dd = new Date(elt.date_ajout)
+          elt.date_ajout = dd.toISOString().split('T')[0];
+          element.score=elt.score
+          })
+          element.taches.forEach(elt => {
+          
+          const dd = new Date(elt.date_debut)
+          elt.date_debut = dd.toISOString().split('T')[0];
+
+          const df = new Date(elt.date_fin)
+          elt.date_fin = dd.toISOString().split('T')[0];
+
+
+          elt.avancementTache.forEach(eltAvan => {
+          
+          const dda = new Date(eltAvan.date_ajout)
+          eltAvan.date_ajout = dda.toISOString().split('T')[0];
+          elt.score=eltAvan.score
+          })
+         
+          })
+          }
+      )});     
       }
       
   }

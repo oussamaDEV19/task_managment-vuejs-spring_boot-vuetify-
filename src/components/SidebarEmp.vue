@@ -1,17 +1,8 @@
 <template>
   <nav>
-<!--
-    <v-snackbar
-      v-model="snackbar"
-      :timeout="timeout"
-      color="success"
-    >
-      {{ text }}
-    </v-snackbar>
--->
 
       <v-app-bar flat app>
-        <v-app-bar-nav-icon  class="grey--text" @click="drawer = ! drawer"></v-app-bar-nav-icon>
+        <v-app-bar-nav-icon  class="grey--text" ></v-app-bar-nav-icon>
       <v-toolbar-title class="text-uppercase pink--text">
         <v-icon large color="pink" class="mr-3">mdi-timer-sand</v-icon>
         <span class="font-weight-light">Task</span>
@@ -72,7 +63,7 @@ export default {
         {icon : 'mdi-view-dashboard', text : 'Projetes', route : '/employe/projets'},
         {icon : 'mdi-calendar-check', text : 'taches', route : '/employe/taches'},
         {icon : 'mdi-message-bulleted', text : 'Send Messages', route : '/employe/messages'},
-        {icon : 'mdi-account-cog', text : 'Profil', route : '/profil'}
+        {icon : 'mdi-account-cog', text : 'Profil', route : '/employe/profilEmpl'}
       ],
       snackbar: false,
       text: 'msg...',

@@ -31,11 +31,9 @@
             <v-col>
             </v-col>
             <v-col>
-                <v-btn class="info">PDF</v-btn>
+                <a :href= "projet.document" target="_blank"><v-btn class="info">Document</v-btn></a>
             </v-col>
-            <v-col>
-                <v-btn color="red" dark>EXCEl</v-btn>
-            </v-col>
+            
         </v-row>
       </v-container>
     </section>

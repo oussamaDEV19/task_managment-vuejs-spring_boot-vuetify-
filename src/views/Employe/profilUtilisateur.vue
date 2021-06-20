@@ -1,7 +1,6 @@
 <template>
 
 <v-app>
-<SideBar/>
 <v-container>
 <v-form
     ref="form"
@@ -132,7 +131,6 @@
  
   export default {  
     components: {
-      SideBar: () => import('../Sidebar'),
     },
     data () {
       return {

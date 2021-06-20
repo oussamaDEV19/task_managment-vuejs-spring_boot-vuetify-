@@ -56,8 +56,10 @@
     }),
     mounted(){
       console.log("heyyyyy");
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token');
+
       axios
-      .get('http://localhost:8081/projets/getProjetEmploye',{headers:{'Authorization':`Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbmFzQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJFTVBMT1lFRSJ9XSwiZXhwIjoxNjI0MDM1NTI2fQ.4TWLXXPMRctpomYaElTvvbJJMkJnkqFZG1scFvm9cd07WVokx6CrxbiQtnXfn5zt4iZ0qE-DB9tldT3_CRzuYw `}})
+      .get('http://localhost:8081/projets/getProjetEmploye')
       .then(response => (this.infosProjetEmploye= response.data));  
       console.log("heyyyyy222");
    

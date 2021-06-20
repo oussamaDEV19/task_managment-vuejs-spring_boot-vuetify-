@@ -5,7 +5,7 @@
     ref="form"
     v-model="valid"
     lazy-validation
-    class="ma-5 col-6"
+    class="ma-5 col-9"
   >
 
   <v-text-field
@@ -29,7 +29,9 @@
 
     <v-select
       v-model="select"
-      :items="items"
+      :items="managers"
+      item-text="nom"
+      item-value="email"
       :rules="[v => !!v || 'Manager is required']"
       label="Manager"
       required
@@ -38,7 +40,7 @@
 
     <v-btn
       :disabled="!valid"
-      color="success"
+      color="info"
       class="mr-4 mt-3"
       @click="validate"
     >
@@ -58,6 +60,9 @@
 </template>
 
 <script>
+  import { db } from '../../store/db'
+import axios from 'axios'
+     import { projet } from '../../store/projet'
   export default {
     components: {
       SideBar: () => import('../Sidebar'),
@@ -75,21 +80,28 @@
         v => (v && v.length <= 10) || 'Title must be less than 10 characters',
       ],
       select: null,
-      items: [
-        'Mustapha hadou',
-        'Dounia Lamsaddeq',
-        'Iman rihani',
-        'Said jamiri',
-      ],
+      managers: [],
     }),
 
     methods: {
       validate () {
         this.$refs.form.validate()
+console.log("hahha");
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token');
+      axios
+      .post('http://localhost:8081/message/envoiyeMessage/',{
+                    objet: this.titre,
+                    contenu:this.msg,
+                    email_rec: this.select,
+                }); 
+
       },
       reset () {
         this.$refs.form.reset()
       },
     },
+    created () {
+          this.managers = db.getters.Allmanagers
+    }
   }
 </script>

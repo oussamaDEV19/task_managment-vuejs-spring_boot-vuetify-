@@ -37,9 +37,9 @@
                 <strong>{{ite.score}}</strong>
                 </v-col>
                 <v-col >
-                <strong>{{ite.date_ajout}}</strong>
+                <strong>{{ite.titre}}</strong>
                 <div class="caption">
-                  {{ite.titre}}
+                  {{ite.date_ajout}}
                 </div>
                 </v-col>
             </v-row>
@@ -106,8 +106,8 @@
             value: 'titre',
           },
           { text: 'Manager', value: 'manager' },
-          { text: 'Deadline (Days)', value: 'Deadline' },
-          { text: 'progression (%)', value: 'progression' },
+          { text: 'duree restant (Jours)', value: 'deadline' },
+          { text: 'progression (%)', value: 'score' },
           { text: 'Task State', value: 'status' },
           { text: '', value: 'data-table-expand' },
         ],
@@ -130,10 +130,55 @@
         },
         mounted(){
       console.log("heyyyyy");
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token');
+
       axios
-      .get('http://localhost:8081/tache/getTacheEmploye',{headers:{'Authorization':`Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbmFzQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJFTVBMT1lFRSJ9XSwiZXhwIjoxNjI0MDM1NTI2fQ.4TWLXXPMRctpomYaElTvvbJJMkJnkqFZG1scFvm9cd07WVokx6CrxbiQtnXfn5zt4iZ0qE-DB9tldT3_CRzuYw `}})
-      .then(response => (this.infostacheEmploye= response.data));  
-      console.log("heyyyyy222");
+      .get('http://localhost:8081/tache/getTacheEmploye')
+      .then(response =>{
+      
+      this.infostacheEmploye= response.data
+       response.data.forEach(element => {
+          
+          const dd = new Date(element.date_debut)
+          element.date_debut = dd.toISOString().split('T')[0];
+          const df = new Date(element.date_fin)
+          element.date_fin = df.toISOString().split('T')[0];
+
+        var aDay = 86400000;
+        const current = new Date();
+
+        var diff = Math.floor(
+          (
+            Date.parse(element.date_fin) - Date.parse(current)
+          ) / aDay);
+          //console.log(diff)
+          element.deadline = diff; 
+
+          element.avancementTache.forEach(eltAvan => {
+          
+          const dda = new Date(eltAvan.date_ajout)
+          eltAvan.date_ajout = dda.toISOString().split('T')[0];
+          element.score=eltAvan.score
+          })
+
+        } )
+      
+        
+      
+      }
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      );  
+      
    
       }
   }

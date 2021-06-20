@@ -14,6 +14,9 @@ import Error from '@/components/admin/error'
 import Messages from '@/components/admin/messages'
 import CrudUsers from '@/components/admin/crudUsers'
 import profilUtilisateur from '@/components/admin/profilUtilisateur'
+import profilUtilisateurEmpl from '@/views/Employe/profilUtilisateur'
+import profilUtilisateurManager from '@/views/Manager/profilUtilisateur'
+
 
 import HomePage from '@/views/homePage'
 import Employe from '@/views/Employe/Employe'
@@ -91,6 +94,12 @@ const routes = [{
         component:profilUtilisateur,
         name: 'profilUtilisateur'
     },
+  
+    {
+        path: '/profilManager',
+        component:profilUtilisateurManager,
+        name: 'profilUtilisateur'
+    },
     {
         path: '/employe',
         component: Employe,
@@ -107,7 +116,13 @@ const routes = [{
             path: 'projets',
             name: 'projets',
             component: projets
-        }]
+        },
+        {
+            path: 'profilEmpl',
+            component:profilUtilisateurEmpl,
+            name: 'profilUtilisateur'
+        }
+    ]
     },
     {
         path: '/',
@@ -132,7 +147,13 @@ const routes = [{
             path: 'projets',
             name: 'projets',
             component: projetsManager
-        }]
+        },
+        {
+            path: 'profilManager',
+            component:profilUtilisateurManager,
+            name: 'profilUtilisateur'
+        }
+    ]
     },
     
     /*{

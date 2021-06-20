@@ -18,7 +18,7 @@
                 <v-col >
                 <strong>{{item.titre}}</strong>
                 <div class="caption">
-                    {{item.score}}
+                    {{item.date_ajout}}
                 </div>
                 </v-col>
             </v-row>

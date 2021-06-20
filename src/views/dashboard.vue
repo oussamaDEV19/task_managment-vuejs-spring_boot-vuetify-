@@ -5,7 +5,7 @@
       <v-row dense class="mt-10">
         <v-col cols="12">
           <v-card
-            color="teal"
+            color=""
             dark
           >
             <v-card-title class="text-h5">
@@ -36,7 +36,7 @@
         <v-col
           v-for="(item, i) in items"
           :key="i"
-          cols="6"
+          cols="4"
           class="mt-10 px-5"
         >
           <v-card
@@ -54,9 +54,18 @@
                 <v-card-title
                   class="text-h5"
                   v-text="item.title"
-                ></v-card-title>
+                >
+                
+              </v-card-title>
+              <v-avatar
+              class="nbb mt-5 mt-n2  "
+              tile
+                size="100"
+              >
+                <v-img :src="item.src"></v-img>
+              </v-avatar>
 
-                <v-card-subtitle class="nbb mt-3" v-text="item.artist"></v-card-subtitle>
+                <v-card-subtitle class="nbb mt-n12  ml-11" v-text="item.artist"></v-card-subtitle>
 
                 <v-card-actions>
                   <v-btn
@@ -73,13 +82,7 @@
                 
               </div>
 
-              <v-avatar
-                class="ma-3"
-                size="125"
-                tile
-              >
-                <v-img :src="item.src"></v-img>
-              </v-avatar>
+             
             </div>
           </v-card>
         </v-col>
@@ -106,7 +109,7 @@ import { db } from '../store/db'
       admin : "",
       items: [
         {
-          color: '#1F7087',
+          color: '#189adb',
           src: 'https://image.flaticon.com/icons/png/512/1177/1177568.png ',
           title: 'Total Managers',
           artist: 0,
@@ -114,7 +117,7 @@ import { db } from '../store/db'
           eff: 0,
         },
         {
-          color: '#952175',
+          color: '#f5202a',
           src: 'https://image.flaticon.com/icons/png/512/1583/1583264.png',
           title: 'Total Processing Projects',
           artist: 0,
@@ -122,7 +125,7 @@ import { db } from '../store/db'
           eff: 0,
         },
         {
-          color: '#952175',
+          color: '#7d9de8',
           src: 'https://image.flaticon.com/icons/png/512/3921/3921671.png',
           title: 'Total Projects',
           artist: 0,
@@ -130,7 +133,7 @@ import { db } from '../store/db'
           eff: 0,
         },
         {
-          color: '#1F7087',
+          color: '#294994',
           src: 'https://image.flaticon.com/icons/png/512/1505/1505465.png',
           title: 'Total Finished Projects',
           artist: 0,
@@ -138,7 +141,7 @@ import { db } from '../store/db'
           eff: 0,
         },
         {
-          color: '#1F7087',
+          color: '#69acff',
           src: 'https://image.flaticon.com/icons/png/512/782/782747.png',
           title: 'Total Cancelled Projects',
           artist: 0,
@@ -146,7 +149,7 @@ import { db } from '../store/db'
           eff: 0,
         },
         {
-          color: '#952175',
+          color: '#fc8b90',
           src: 'https://image.flaticon.com/icons/png/512/1534/1534999.png',
           title: 'Effectiveness',
           artist: 0,

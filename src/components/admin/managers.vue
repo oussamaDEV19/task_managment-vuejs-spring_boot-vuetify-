@@ -52,7 +52,7 @@ import { db } from '../../store/db'
       initialize () {
         
         setTimeout(() => {
-            //this.managers = db.getters.Allmanagers
+            this.managers = db.getters.Allmanagers
           }, 1000)
       },
     },

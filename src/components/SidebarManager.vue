@@ -25,7 +25,7 @@
           
         </v-layout>
         <p class="white--text subheading mt-4 ">
-            Task Managment (Employe)
+            Task Managment (Manager)
         </p>
  
       </v-layout>
@@ -55,7 +55,7 @@ export default {
       links: [
         {icon : 'mdi-view-dashboard', text : 'Projetes', route : '/manager/projets'},
         {icon : 'mdi-message-bulleted', text : 'Send Messages', route : '/manager/messages'},
-        {icon : 'mdi-account-cog', text : 'Profil', route : '/profil'},
+        {icon : 'mdi-account-cog', text : 'Profil', route : '/manager/profilManager'},
 
       ],
       snackbar: false,

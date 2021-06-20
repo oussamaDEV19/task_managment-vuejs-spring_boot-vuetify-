@@ -117,7 +117,7 @@
     :expanded.sync="expanded"
     item-key="employee.nom"
     show-expand
-    class="elevation-1 ma-5"
+    class="elevation-1 ma-1"
   >
     <template v-slot:top>
       <v-toolbar flat>
@@ -157,12 +157,12 @@
             </v-timeline>
       </td>
     </template>
-    <template v-slot:item.state="{ item }">
+    <template v-slot:item.status="{ item }">
       <v-chip
-        :color="getColor(item.state)"
+        :color="getColor(item.status)"
         dark
       >
-        {{ item.state }}
+        {{ item.status }}
       </v-chip>
     </template>
   </v-data-table>
@@ -198,7 +198,7 @@
           { text: 'Employé', value: 'employee.nom' },
           { text: 'Date Debut', value: 'date_debut' },
           { text: 'Date Fin', value: 'date_fin' },
-          { text: 'Progression (%)', value: 'status' },
+          { text: 'Progression (%)', value: 'score' },
           { text: 'Task State', value: 'status' },
           { text: '', value: 'data-table-expand' },
         ],
@@ -247,7 +247,9 @@
               axios.get('http://localhost:8081/users/getEmployeParTaches/'+this.idProjet)
               .then(response => (
                 this.employeDisponible=response.data
-              ));  
+              )); 
+              
+              
              
             },
   }
