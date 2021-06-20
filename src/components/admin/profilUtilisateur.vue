@@ -81,6 +81,7 @@
                               cols="6"
                             >
                               <v-text-field
+                              type="password"
                                 v-model="NVMDP"
                                 label="Nom"
                               ></v-text-field>
@@ -146,8 +147,10 @@
         db.dispatch('updateUser', this.employeConnecte)
       },
     updateMDP(){
-        db.dispatch('updateUserMDP', this.NVMDP)
-        this.dialog = true
+        db.dispatch('updateUserMDP',this.NVMDP)
+        console.log("kk");
+
+        this.dialog = false
 
       },
       close () {
@@ -155,7 +158,7 @@
       }
    },
     mounted(){
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token');
+        axios.defaults.headers.common['Authorization'] = 'Bearer '+localStorage.getItem('access_token');
         axios.get('http://localhost:9090/users/infosUtili')
             .then(response => (
             this.employeConnecte=response.data

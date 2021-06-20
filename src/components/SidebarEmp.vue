@@ -72,6 +72,7 @@ export default {
         {icon : 'mdi-view-dashboard', text : 'Projetes', route : '/employe/projets'},
         {icon : 'mdi-calendar-check', text : 'taches', route : '/employe/taches'},
         {icon : 'mdi-message-bulleted', text : 'Send Messages', route : '/employe/messages'},
+        {icon : 'mdi-account-cog', text : 'Profil', route : '/profil'}
       ],
       snackbar: false,
       text: 'msg...',

@@ -114,6 +114,18 @@ export const db = new Vuex.Store( {
       },
   },
   actions: {
+
+
+    updateUserMDP(context,nvPass) {
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token')
+      axios.put('http://localhost:9090/users/updateUserMDP/' +nvPass)
+      .then(response => {
+        //context.commit('updateUser', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  },
     addAdmin(context, credentials) {
 
       return new Promise((resolve, reject) => {

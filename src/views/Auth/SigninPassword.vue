@@ -25,6 +25,7 @@
 
       <v-form>
         <v-text-field
+        type="password"
           class="mb-10"
           :append-icon="show ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
           :label="$vuetify.lang.t('$vuetify.auth.sign-in-password.enter-password')"

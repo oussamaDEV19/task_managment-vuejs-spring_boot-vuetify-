@@ -55,6 +55,8 @@ export default {
       links: [
         {icon : 'mdi-view-dashboard', text : 'Projetes', route : '/manager/projets'},
         {icon : 'mdi-message-bulleted', text : 'Send Messages', route : '/manager/messages'},
+        {icon : 'mdi-account-cog', text : 'Profil', route : '/profil'},
+
       ],
       snackbar: false,
       text: 'msg...',
