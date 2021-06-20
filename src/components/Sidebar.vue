@@ -73,6 +73,8 @@ export default {
         {icon : 'mdi-shield-account', text : 'My Managers', route : '/managers'},
         {icon : 'mdi-message-bulleted', text : 'Send Messages', route : '/messages'},
         {icon : 'mdi-account-cog', text : 'Manage Users', route : '/users'},
+        {icon : 'mdi-account-cog', text : 'Profil', route : '/profil'},
+
       ],
       snackbar: false,
       text: 'msg...',

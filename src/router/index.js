@@ -13,6 +13,8 @@ import Managers from '@/components/admin/managers'
 import Error from '@/components/admin/error'
 import Messages from '@/components/admin/messages'
 import CrudUsers from '@/components/admin/crudUsers'
+import profilUtilisateur from '@/components/admin/profilUtilisateur'
+
 import HomePage from '@/views/homePage'
 import Employe from '@/views/Employe/Employe'
 import projets from '@/views/Employe/projets'
@@ -83,6 +85,11 @@ const routes = [{
         path: '/Users',
         component: CrudUsers,
         name: 'CrudUsers'
+    },
+    {
+        path: '/profil',
+        component:profilUtilisateur,
+        name: 'profilUtilisateur'
     },
     {
         path: '/employe',
